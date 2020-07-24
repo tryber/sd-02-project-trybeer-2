@@ -17,6 +17,23 @@ const getUserByEmail = async (param) => {
   return { id, name, email, password, role };
 };
 
+const createUser = async (modelInfo) => {
+  const { name, email, password, stringRole } = modelInfo;
+  const session = await connection();
+  const id = await session.sql(
+    `INSERT INTO users (name, email, password, role)
+    VALUES (?, ?, ?, ?);`,
+  )
+    .bind(name)
+    .bind(email)
+    .bind(password)
+    .bind(stringRole)
+    .execute()
+    .then((result) => result.getAutoIncrementValue());
+  return { id, name, email, role: stringRole };
+};
+
 module.exports = {
   getUserByEmail,
+  createUser,
 };
