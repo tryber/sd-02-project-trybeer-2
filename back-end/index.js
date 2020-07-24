@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/test', (req, res) => {
+app.get('/test', (req, res) => {3
   console.log('pong');
   res.send('ping');
 });
