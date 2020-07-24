@@ -7,16 +7,13 @@ const LoginScreen = () => {
   const [passData, setPassData] = useState('');
 
   const sendLoginRequest = async (email, password) => {
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const loginData = await axios.post(`${proxyurl}http://localhost:3001/login`, {
-      method: 'post',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      data: {
-        email,
-        password
-      },
+    console.log(email, password)
+    const loginData = await axios.post(`http://localhost:3001/login`, {
+      email,
+      password,
     })
-    console.log(loginData.request);
+    .catch((err) => console.log(err) );
+    ;
   }
 
   const interactiveFormField = (formName, type) => (
