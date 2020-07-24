@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon index.js"
+    "debug": "nodemon index.js",
+    "start:watch": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
