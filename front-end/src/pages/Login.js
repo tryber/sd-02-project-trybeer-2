@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import history from '../services/history';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import '../style/Login.css';
 
@@ -26,7 +27,7 @@ const loginRedirect = ({ data: { name, email, token, role } }) => {
   return history.push('/client/products');
 }
 
-const renderPage = (interactiveFormField, formValidation, emailData, passData, isEmailGood, isPasswordGood) => (
+const renderPage = (interactiveFormField, formValidation, [emailData, passData, isEmailGood, isPasswordGood, setShouldRegister]) => (
   <div className="login-page">
     <div className="form-container">
       <form className="login-form">
@@ -46,7 +47,7 @@ const renderPage = (interactiveFormField, formValidation, emailData, passData, i
       <button
         data-testid="no-account-btn"
         className="no-account-btn"
-        onClick={() => history.push('/register')}>
+        onClick={() => setShouldRegister(true)}>
         Ainda não tenho conta
       </button>
     </div>
@@ -71,6 +72,9 @@ const LoginScreen = () => {
   const [passData, setPassData] = useState('');
   const [isEmailGood, setIsEmailGood] = useState(false);
   const [isPasswordGood, setIsPasswordGood] = useState(false);
+  const [shouldRegister, setShouldRegister] = useState(false);
+
+  if(shouldRegister) return <Redirect to="/register" />
 
   const interactiveFormField = (formName, type, formValidation) => (
     <label className="form-label" htmlFor={formName}>
@@ -85,7 +89,7 @@ const LoginScreen = () => {
     </label>
   );
 
-  return renderPage(interactiveFormField, formValidation, emailData, passData, isEmailGood, isPasswordGood);
+  return renderPage(interactiveFormField, formValidation, [emailData, passData, isEmailGood, isPasswordGood, setShouldRegister]);
 }
 
 export default LoginScreen;
