@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import history from '../services/history';
 import axios from 'axios';
 
+const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 const sendLoginRequest = async (email, password) => {
   const loginData = await axios({
     baseURL: `http://localhost:3001/login`,
@@ -20,7 +22,7 @@ const sendLoginRequest = async (email, password) => {
 const loginRedirect = ({ data: { name, email, token, role } }) => {
   localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
   if (role === 'administrator') return history.push('/admin/home');
-  return history.push('/client/home');
+  return history.push('/client/products');
 }
 
 const renderPage = (interactiveFormField, emailData, passData, isEmailGood, isPasswordGood) => (
@@ -72,8 +74,7 @@ const LoginScreen = () => {
     }
     if(type === 'email') {
       setEmailData(value)
-      const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      const isMailValid = value.match(mailRegex);
+      const isMailValid = value.match(MAIL_REGEX);
       isMailValid !== null ? setIsEmailGood(true) : setIsEmailGood(false);
     }
   }
