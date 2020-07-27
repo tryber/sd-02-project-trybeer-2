@@ -6,7 +6,7 @@ import '../style/Login.css';
 
 const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-const sendLoginRequest = async (email, password) => {
+const sendLoginRequest = async (email, password, setErrorMessage) => {
   const loginData = await axios({
     baseURL: `http://localhost:3001/login`,
     method: 'post',
@@ -16,9 +16,9 @@ const sendLoginRequest = async (email, password) => {
     },
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json'}
   })
-  .catch((err) => console.log(err) );
+  .catch(({ response: { status, data: { error: { message }}} }) => setErrorMessage(`Error: ${status}. ${message}`));
 
-  return loginRedirect(loginData);
+  return loginData ? loginRedirect(loginData) : null;
 }
 
 const loginRedirect = ({ data: { name, email, token, role } }) => {
@@ -27,8 +27,9 @@ const loginRedirect = ({ data: { name, email, token, role } }) => {
   return history.push('/client/products');
 }
 
-const renderPage = (interactiveFormField, formValidation, [emailData, passData, isEmailGood, isPasswordGood, setShouldRegister]) => (
+const renderPage = (interactiveFormField, formValidation, [emailData, passData, isEmailGood, isPasswordGood, setShouldRegister, errorMessage, setErrorMessage]) => (
   <div className="login-page">
+    <div className="error-div">{errorMessage}</div>
     <div className="form-container">
       <form className="login-form">
         {interactiveFormField('email-input', 'email', formValidation)}
@@ -38,7 +39,7 @@ const renderPage = (interactiveFormField, formValidation, [emailData, passData, 
           disabled={!(isEmailGood && isPasswordGood)}
           onClick={(e) => {
             e.preventDefault();
-            sendLoginRequest(emailData, passData)}}>
+            sendLoginRequest(emailData, passData, setErrorMessage)}}>
               ENTRAR
         </button>
       </form>
@@ -73,6 +74,7 @@ const LoginScreen = () => {
   const [isEmailGood, setIsEmailGood] = useState(false);
   const [isPasswordGood, setIsPasswordGood] = useState(false);
   const [shouldRegister, setShouldRegister] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   if(shouldRegister) return <Redirect to="/register" />
 
@@ -89,7 +91,7 @@ const LoginScreen = () => {
     </label>
   );
 
-  return renderPage(interactiveFormField, formValidation, [emailData, passData, isEmailGood, isPasswordGood, setShouldRegister]);
+  return renderPage(interactiveFormField, formValidation, [emailData, passData, isEmailGood, isPasswordGood, setShouldRegister, errorMessage, setErrorMessage]);
 }
 
 export default LoginScreen;
