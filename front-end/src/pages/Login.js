@@ -51,15 +51,18 @@ const renderPage = (interactiveFormField, formValidation, emailData, passData, i
   </div>
 )
 
-const interactiveFormField = (formName, type, formValidation) => (
-  <label htmlFor={formName}>
-    <input
-      type={type}
-      id={formName}
-      data-testid={formName}
-      onChange={(e) => formValidation(type, e.target.value)  }/>
-  </label>
-);
+
+const formValidation = ([type, value], setPassData, setIsPasswordGood, setEmailData, setIsEmailGood) => {
+  if(type === 'password') {
+    setPassData(value)
+    if (value.length >= 6) return setIsPasswordGood(true)
+    return setIsPasswordGood(false);
+  }
+  setEmailData(value)
+  const isMailValid = value.match(MAIL_REGEX);
+  if (isMailValid !== null) return setIsEmailGood(true)
+  return setIsEmailGood(false);
+}
 
 const LoginScreen = () => {
   const [emailData, setEmailData] = useState('');
@@ -67,18 +70,15 @@ const LoginScreen = () => {
   const [isEmailGood, setIsEmailGood] = useState(false);
   const [isPasswordGood, setIsPasswordGood] = useState(false);
 
-
-  const formValidation = (type, value) => {
-    if(type === 'password') {
-      setPassData(value)
-      if (value.length >= 6) return setIsPasswordGood(true)
-      return setIsPasswordGood(false);
-    }
-    setEmailData(value)
-    const isMailValid = value.match(MAIL_REGEX);
-    if (isMailValid !== null) return setIsEmailGood(true)
-    return setIsEmailGood(false);
-  }
+  const interactiveFormField = (formName, type, formValidation) => (
+    <label htmlFor={formName}>
+      <input
+        type={type}
+        id={formName}
+        data-testid={formName}
+        onChange={(e) => formValidation([type, e.target.value], setPassData, setIsPasswordGood, setEmailData, setIsEmailGood)}/>
+    </label>
+  );
 
   return renderPage(interactiveFormField, formValidation, emailData, passData, isEmailGood, isPasswordGood);
 }
