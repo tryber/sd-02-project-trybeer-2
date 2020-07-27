@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import history from '../services/history';
 import axios from 'axios';
+import '../style/Login.css';
 
 const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -32,6 +33,7 @@ const renderPage = (interactiveFormField, formValidation, emailData, passData, i
         {interactiveFormField('email-input', 'email', formValidation)}
         {interactiveFormField('password-input', 'password', formValidation)}
         <button
+          className="login-btn"
           disabled={!(isEmailGood && isPasswordGood)}
           onClick={(e) => {
             e.preventDefault();
@@ -71,10 +73,13 @@ const LoginScreen = () => {
   const [isPasswordGood, setIsPasswordGood] = useState(false);
 
   const interactiveFormField = (formName, type, formValidation) => (
-    <label htmlFor={formName}>
+    <label className="form-label" htmlFor={formName}>
+      {type.charAt(0).toUpperCase() + type.slice(1)}
+      <br />
       <input
         type={type}
         id={formName}
+        className="form-field"
         data-testid={formName}
         onChange={(e) => formValidation([type, e.target.value], setPassData, setIsPasswordGood, setEmailData, setIsEmailGood)}/>
     </label>
