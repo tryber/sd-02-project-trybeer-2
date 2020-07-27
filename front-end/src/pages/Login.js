@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import history from '../services/history';
 import axios from 'axios';
 
 
@@ -20,10 +21,15 @@ const LoginScreen = () => {
     })
     .catch((err) => console.log(err) );
 
-    return storeLoginData(loginData);
+    return loginRedirect(loginData);
   }
 
-  const storeLoginData = ({ data: { name, email, token, role } }) => localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
+  const loginRedirect = ({ data: { name, email, token, role } }) => {
+    localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
+    if (role === 'administrator') return history.push('/admin/home');
+    return history.push('/client/home');
+  }
+
 
   const formValidation = (type, value) => {
     if(type === 'password') {
@@ -64,7 +70,10 @@ const LoginScreen = () => {
         </form>
       </div>
       <div className="no-account-btn-container">
-        <button data-testid="no-account-btn" className="no-account-btn">
+        <button
+          data-testid="no-account-btn"
+          className="no-account-btn"
+          onClick={() => history.push('/register')}>
           Ainda não tenho conta
         </button>
       </div>
