@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import AdminHome from './pages/admin/Home'
 import ClientHome from './pages/client/Home';
 import history from './services/history';
-import { TrybeerContext } from './context/TrybeerContext';
 import './App.css';
 
 function App() {
