@@ -71,11 +71,13 @@ const LoginScreen = () => {
   const formValidation = (type, value) => {
     if(type === 'password') {
       setPassData(value)
-      return value.length >= 6 ? setIsPasswordGood(true) : setIsPasswordGood(false);
+      if (value.length >= 6) return setIsPasswordGood(true)
+      return setIsPasswordGood(false);
     }
     setEmailData(value)
     const isMailValid = value.match(MAIL_REGEX);
-    return isMailValid !== null ? setIsEmailGood(true) : setIsEmailGood(false);
+    if (isMailValid !== null) return setIsEmailGood(true)
+    return setIsEmailGood(false);
   }
 
   return renderPage(interactiveFormField, formValidation, emailData, passData, isEmailGood, isPasswordGood);
