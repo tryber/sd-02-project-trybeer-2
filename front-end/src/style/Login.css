@@ -3,33 +3,32 @@ body {
 }
 
 .login-page {
+  align-items: center;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: center;
   margin-top: 30%;
 }
 
 .form-container {
   min-width: 90%
-
 }
 
 .login-form {
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-start;
   height: 150px;
+  justify-content: space-around;
   margin: 12px;
 }
 
 .form-label {
+  align-items: flex-start;
   flex-direction: column;
   justify-content: space-around;
-  align-items: flex-start;
-  text-align: left;
   min-width: 100%;
+  text-align: left;
 }
 
 .form-field {
@@ -38,7 +37,7 @@ body {
 
 .login-btn {
   background: #0fea76;
-  width: 100%;
   height: 30px;
   margin-top: 15px;
+  width: 100%;
 }
