@@ -89,7 +89,9 @@ const RegisterPage = () => {
 
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit()}>
+      <form onSubmit={(e) => handleSubmit(
+        event, nameData, passData, emailData, setNameData, setEmailData, setPassData, setSellerData,
+      )}>
         {textInputs('text', 'Nome', nameData, setNameData, "signup-name")}
         {textInputs('text', 'Email', emailData, setEmailData, "signup-email")}
         {textInputs('number', 'Password', passData, setPassData, "signup-password")}
