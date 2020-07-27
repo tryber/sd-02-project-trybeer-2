@@ -54,40 +54,42 @@ const clearFields = (setNameData, setEmailData, setPassData, setSellerData) => {
   setSellerData(false);
 };
 
+const handleSubmit = (
+  event, nameData, passData, emailData, setNameData, setEmailData, setPassData, setSellerData,
+) => {
+  const isValid = verifyValues(nameData, passData, emailData);
+  if (isValid.error === 'name') {
+    alert('O nome deve possuir 12 caracteres e sem caracteres especiais');
+    setNameData('');
+    return event.preventDefault();
+  }
+  if (isValid.error === 'pass') {
+    alert('A senha deve conter ao menos 6 números');
+    setPassData('');
+    return event.preventDefault();
+  }
+  if (isValid.error === 'email') {
+    alert('Formato de Email invalido');
+    setEmailData('');
+    return event.preventDefault();
+  }
+  clearFields(setNameData, setEmailData, setPassData, setSellerData);
+  requestRegister(nameData, emailData, passData, sellerData);
+  event.preventDefault();
+};
+
 const RegisterPage = () => {
   const [emailData, setEmailData] = useState('');
   const [passData, setPassData] = useState('');
   const [nameData, setNameData] = useState('');
   const [sellerData, setSellerData] = useState(false);
 
-  const handleSubmit = (event) => {
-    const isValid = verifyValues(nameData, passData, emailData);
-    if (isValid.error === 'name') {
-      alert('O nome deve possuir 12 caracteres e sem caracteres especiais');
-      setNameData('');
-      return event.preventDefault();
-    }
-    if (isValid.error === 'pass') {
-      alert('A senha deve conter ao menos 6 números');
-      setPassData('');
-      return event.preventDefault();
-    }
-    if (isValid.error === 'email') {
-      alert('Formato de Email invalido');
-      setEmailData('');
-      return event.preventDefault();
-    }
-    clearFields(setNameData, setEmailData, setPassData, setSellerData);
-    requestRegister(nameData, emailData, passData, sellerData);
-    event.preventDefault();
-  };
 
   const disabled = verifyValues(nameData, passData, emailData);
-  console.log(disabled);
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => handleSubmit()}>
         {textInputs('text', 'Nome', nameData, setNameData, "signup-name")}
         {textInputs('text', 'Email', emailData, setEmailData, "signup-email")}
         {textInputs('number', 'Password', passData, setPassData, "signup-password")}
