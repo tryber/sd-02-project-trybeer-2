@@ -25,12 +25,12 @@ const loginRedirect = ({ data: { name, email, token, role } }) => {
   return history.push('/client/products');
 }
 
-const renderPage = (interactiveFormField, emailData, passData, isEmailGood, isPasswordGood) => (
+const renderPage = (interactiveFormField, formValidation, emailData, passData, isEmailGood, isPasswordGood) => (
   <div className="login-page">
     <div className="form-container">
       <form className="login-form">
-        {interactiveFormField('email-input', 'email')}
-        {interactiveFormField('password-input', 'password')}
+        {interactiveFormField('email-input', 'email', formValidation)}
+        {interactiveFormField('password-input', 'password', formValidation)}
         <button
           disabled={!(isEmailGood && isPasswordGood)}
           onClick={(e) => {
@@ -51,35 +51,34 @@ const renderPage = (interactiveFormField, emailData, passData, isEmailGood, isPa
   </div>
 )
 
+const interactiveFormField = (formName, type, formValidation) => (
+  <label htmlFor={formName}>
+    <input
+      type={type}
+      id={formName}
+      data-testid={formName}
+      onChange={(e) => formValidation(type, e.target.value)  }/>
+  </label>
+);
+
 const LoginScreen = () => {
   const [emailData, setEmailData] = useState('');
   const [passData, setPassData] = useState('');
   const [isEmailGood, setIsEmailGood] = useState(false);
   const [isPasswordGood, setIsPasswordGood] = useState(false);
 
-  const interactiveFormField = (formName, type) => (
-    <label htmlFor={formName}>
-      <input
-        type={type}
-        id={formName}
-        data-testid={formName}
-        onChange={(e) => formValidation(type, e.target.value)  }/>
-    </label>
-  );
 
   const formValidation = (type, value) => {
     if(type === 'password') {
       setPassData(value)
-      value.length >= 6 ? setIsPasswordGood(true) : setIsPasswordGood(false);
+      return value.length >= 6 ? setIsPasswordGood(true) : setIsPasswordGood(false);
     }
-    if(type === 'email') {
-      setEmailData(value)
-      const isMailValid = value.match(MAIL_REGEX);
-      isMailValid !== null ? setIsEmailGood(true) : setIsEmailGood(false);
-    }
+    setEmailData(value)
+    const isMailValid = value.match(MAIL_REGEX);
+    return isMailValid !== null ? setIsEmailGood(true) : setIsEmailGood(false);
   }
 
-  return renderPage(interactiveFormField, emailData, passData, isEmailGood, isPasswordGood);
+  return renderPage(interactiveFormField, formValidation, emailData, passData, isEmailGood, isPasswordGood);
 }
 
 export default LoginScreen;
