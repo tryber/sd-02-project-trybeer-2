@@ -15,6 +15,10 @@ CREATE TABLE users (
 CREATE TABLE sales (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
+    total_price decimal(9,2) NOT NULL,
+	delivery_address varchar(100) NOT NULL,
+	delivery_number varchar(50) NOT NULL,
+	sale_date date NOT NULL,
     status VARCHAR(50) NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -53,5 +57,3 @@ INSERT INTO products(id, name, price) VALUES
 ('9','Becks 600ml',8.89),
 ('10','Skol Beats Senses 269ml',3.57),
 ('11','Stella Artois 275ml',3.49);
-
-
