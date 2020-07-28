@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import history from '../services/history';
 import axios from 'axios';
 
-import '../styles/RegisterPage.css';
+// import '../style/RegisterPage.css';
 
 const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
