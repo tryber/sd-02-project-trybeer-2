@@ -1,11 +1,11 @@
 .top-menu-container {
+  align-items: center;
+  background: black;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  align-items: center;
-  min-width: 100%;
   min-height: 20%;
-  background: black;
+  min-width: 100%;
 }
 
 .header-title {
@@ -21,6 +21,6 @@
 
 .hamburger-menu-icon {
   fill: white;
-  width: 50px;
   height: 50px;
+  width: 50px;
 }

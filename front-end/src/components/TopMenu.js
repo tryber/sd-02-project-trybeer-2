@@ -15,11 +15,12 @@ export default function TopMenu () {
     setDisplayTopMenu(true);
     if(pathname) {
       if(pathname === '/login' || pathname === '/register') return setDisplayTopMenu(false)
-      if(pathname === '/profile') return setHeaderTitle('Meu perfil')
-      if(pathname === '/checkout') return setHeaderTitle('Finalizar Pedido')
-      if(pathname === '/orders') return setHeaderTitle('Meus Pedidos')
-      if(!!pathname.match(/orders\/[0-9]+/g)) return setHeaderTitle('Detalhes de Pedido')
-      return setHeaderTitle('TryBeer')
+
+      if(pathname === '/profile') setHeaderTitle('Meu perfil')
+      else if(pathname === '/checkout') setHeaderTitle('Finalizar Pedido')
+      else if(pathname === '/orders') setHeaderTitle('Meus Pedidos')
+      else if(!!pathname.match(/orders\/[0-9]+/g)) setHeaderTitle('Detalhes de Pedido')
+      else setHeaderTitle('TryBeer')
     }
   }, [pathname]);
 
@@ -28,8 +29,7 @@ export default function TopMenu () {
     <div className="top-menu-container">
       <div className="hamburger-menu-container">
         <button type="button" className="hamburguer-button" onClick={toggleSideMenu}>
-          <HamburgerMenu className="hamburger-menu-icon" />
-          {/* <img className="hamburger-menu-icon" src={HamburguerMenu} alt="Hamburguer Menu - Icons made by Kiranshastry@https://www.flaticon.com/authors/kiranshastry" /> */}
+          <HamburgerMenu className="hamburger-menu-icon" alt="Hamburguer Menu - Icons made by Kiranshastry@https://www.flaticon.com/authors/kiranshastry"/>
         </button>
       </div>
       <div className="title-container">
