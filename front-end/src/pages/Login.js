@@ -23,8 +23,8 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
 
 const loginRedirect = ({ data: { name, email, token, role } }) => {
   localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
-  if (role === 'administrator') return history.push('/admin/home');
-  return history.push('/client/products');
+  if (role === 'administrator') return history.push('/admin/profile');
+  return history.push('/products');
 }
 
 const renderPage = (interactiveFormField, formValidation, [emailData, passData, isEmailGood, isPasswordGood, setShouldRegister, errorMessage, setErrorMessage]) => (
