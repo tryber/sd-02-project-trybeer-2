@@ -42,8 +42,9 @@ CREATE TABLE sales_products (
     FOREIGN KEY(product_id) REFERENCES products(id)
 );
 
-INSERT INTO users (id, name, email, password, role) VALUES 
-    ('1', 'tryber', 'tryber@trybe.com.br', '123456', 'administrator');
+INSERT INTO users (id, name, email, password, role) VALUES
+    ('1', 'tryber', 'tryber@trybe.com.br', '123456', 'administrator'),
+    ('2', 'testuser', 'user@test.com', 'test123', 'client');
 
 INSERT INTO products(id, name, price) VALUES
 ('1','Skol Lata 250ml',2.20),
