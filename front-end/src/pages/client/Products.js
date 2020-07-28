@@ -14,6 +14,7 @@ const productsRequest = async () => {
 };
 
 export default function ClientProducts () {
+<<<<<<< HEAD
   const [productData, setProductData] = useState([])
 
   useEffect(() => {
@@ -31,4 +32,11 @@ export default function ClientProducts () {
     productsRequest()
     }, [])
   return <div>Produtos Cliente</div>
+=======
+  return (
+    <div>
+      <div>Produtos Cliente</div>
+    </div>
+  )
+>>>>>>> mateus-cliente-menu-superior
 }
