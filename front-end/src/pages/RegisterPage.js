@@ -1,101 +1,105 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import '../styles/RegisterPage.css';
 
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-const textInputs = (type, text, value, setValue, testId) => (
-  <label htmlFor={text}>
-    {text}
-    <input type={type}
-      name={text}
-      value={value}
-      data-testid={testId}
-      onChange={(e) => setValue(e.target.value)} />
-  </label>
-);
-
-const checkBox = (type, text, checked, setValue, testId) => (
+const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, role) => (
   <label htmlFor={text}>
     {text}
     <input
       type={type}
       name={text}
-      checked={checked}
+      value={valueOrChecked[role]}
+      checked={valueOrChecked[role]}
       data-testid={testId}
-      onChange={(e) => setValue(e.target.checked)} />
+      onChange={
+        (type !== 'checkbox')
+          ? ({ target }) => setValue((prev) => ({ ...prev, [role]: target.value }))
+          : ({ target }) => setValue((prev) => ({ ...prev, [role]: target.checked }))}
+    />
   </label>
 );
 
-const requestRegister = async (name, email, password, role) => {
-  const resp = await axios.post('http://localhost:3001/register', { name, email, password, role })
-    .catch((err) => console.log(err));
-  console.log(resp);
+const requestRegister = async ({ nameData, emailData, passData, sellerData }, setSuccessOrError) => {
+  const role = (sellerData) ? 'true' : 'false';
+  const resp = await axios.post('http://localhost:3001/register',
+    {
+      name: nameData,
+      email: emailData,
+      password: passData,
+      role,
+    })
+    .catch((err) => err.response);
+  setSuccessOrError(JSON.stringify(resp.data));
 };
 
-const verifyValues = (name, password, email) => {
-  if (!name || name.length <= 12 || typeof name !== 'string') {
+const verifyValues = (inputsData) => {
+  if (!inputsData.nameData || inputsData.nameData.length < 12 || typeof inputsData.nameData !== 'string') {
     return { error: 'name' }
   };
-  if (!password || password.length <= 6) {
+  if (!inputsData.passData || inputsData.passData.length < 6) {
     return { error: 'pass' }
   };
-  if (!email.match(emailRegex)) {
+  if (!inputsData.emailData.match(emailRegex)) {
     return { error: 'email' }
   }
   return true;
 };
 
-const clearFields = (setNameData, setEmailData, setPassData, setSellerData) => {
-  setNameData('');
-  setPassData('');
-  setEmailData('');
-  setSellerData(false);
+const clearFields = (setInputsData) => {
+  setInputsData({
+    emailData: '',
+    passData: '',
+    nameData: '',
+    sellerData: false
+  });
 };
 
-const handleSubmit = (
-  event, nameData, passData, emailData, setNameData, setEmailData, setPassData, setSellerData,
-) => {
-  const isValid = verifyValues(nameData, passData, emailData);
+const handleSubmit = async (event, inputsData, setInputsData, setSuccessOrError) => {
+  const isValid = verifyValues(inputsData);
   if (isValid.error === 'name') {
     alert('O nome deve possuir 12 caracteres e sem caracteres especiais');
-    setNameData('');
+    setInputsData((prev) => ({ ...prev, nameData: '' }));
     return event.preventDefault();
   }
   if (isValid.error === 'pass') {
     alert('A senha deve conter ao menos 6 números');
-    setPassData('');
+    setInputsData((prev) => ({ ...prev, passData: '' }));
     return event.preventDefault();
   }
   if (isValid.error === 'email') {
     alert('Formato de Email invalido');
-    setEmailData('');
+    setInputsData((prev) => ({ ...prev, emailData: '' }));
     return event.preventDefault();
   }
-  clearFields(setNameData, setEmailData, setPassData, setSellerData);
-  requestRegister(nameData, emailData, passData, sellerData);
+  clearFields(setInputsData);
+  requestRegister(inputsData, setSuccessOrError);
   event.preventDefault();
 };
 
 const RegisterPage = () => {
-  const [emailData, setEmailData] = useState('');
-  const [passData, setPassData] = useState('');
-  const [nameData, setNameData] = useState('');
-  const [sellerData, setSellerData] = useState(false);
+  const [successOrError, setSuccessOrError] = useState('');
+  const [inputsData, setInputsData] = useState({
+    emailData: '',
+    passData: '',
+    nameData: '',
+    sellerData: false,
+  });
 
-
-  const disabled = verifyValues(nameData, passData, emailData);
+  const disabled = verifyValues(inputsData);
 
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(
-        event, nameData, passData, emailData, setNameData, setEmailData, setPassData, setSellerData,
-      )}>
-        {textInputs('text', 'Nome', nameData, setNameData, "signup-name")}
-        {textInputs('text', 'Email', emailData, setEmailData, "signup-email")}
-        {textInputs('number', 'Password', passData, setPassData, "signup-password")}
-        {checkBox('checkbox', 'Quero Vender', sellerData, setSellerData, "signup-seller")}
+      {(successOrError === '') || <h1>{successOrError}</h1>}
+      <form onSubmit={(e) => handleSubmit(e, inputsData, setInputsData, setSuccessOrError)}>
+        {textAndCheckboxInputs('text', 'Nome', inputsData, setInputsData, "signup-name", 'nameData')}
+        {textAndCheckboxInputs('text', 'Email', inputsData, setInputsData, "signup-email", 'emailData')}
+        {textAndCheckboxInputs('number', 'Password', inputsData, setInputsData, "signup-password", 'passData')}
+        {textAndCheckboxInputs(
+          'checkbox', 'Quero Vender', inputsData, setInputsData, "signup-seller", 'sellerData',
+        )}
         <input type="submit" value="Cadastrar" data-testid="signup-btn" disabled={disabled.error} />
       </form>
     </div>
