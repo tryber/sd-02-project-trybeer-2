@@ -8,11 +8,14 @@ const renderPageComponents = (toggleSideMenu, headerTitle) => (
   <div className="top-menu-container">
     <div className="hamburger-menu-container">
       <button type="button" className="hamburguer-button" onClick={toggleSideMenu}>
-        <HamburgerMenu className="hamburger-menu-icon" alt="Hamburguer Menu - Icons made by Kiranshastry@https://www.flaticon.com/authors/kiranshastry"/>
+        <HamburgerMenu
+          className="hamburger-menu-icon"
+          alt="Hamburguer Menu - Icons made by Kiranshastry@https://www.flaticon.com/authors/kiranshastry"
+          data-testid="top-hamburguer"/>
       </button>
     </div>
     <div className="title-container">
-      <h1 className="header-title">{headerTitle}</h1>
+      <h1 data-testid="top-title" className="header-title">{headerTitle}</h1>
     </div>
     <div className="space-div"></div>
   </div>
