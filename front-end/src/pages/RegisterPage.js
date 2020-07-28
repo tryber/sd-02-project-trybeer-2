@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import history from '../services/history';
 import axios from 'axios';
 
 import '../styles/RegisterPage.css';
 
-const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, role) => (
   <label htmlFor={text}>
@@ -31,9 +32,16 @@ const requestRegister = async ({ nameData, emailData, passData, sellerData }, se
       password: passData,
       role,
     })
-    .catch((err) => err.response);
-  setSuccessOrError(JSON.stringify(resp.data));
+    .catch((err) => setSuccessOrError(err.response.data.error));
+
+  if (resp) registerRedirect(resp.data.role);
 };
+
+const registerRedirect = (role) => (
+  role === 'client'
+    ? history.push('/client/products')
+    : history.push('/admin/home')
+);
 
 const verifyValues = (inputsData) => {
   if (!inputsData.nameData || inputsData.nameData.length < 12 || typeof inputsData.nameData !== 'string') {
@@ -42,7 +50,7 @@ const verifyValues = (inputsData) => {
   if (!inputsData.passData || inputsData.passData.length < 6) {
     return { error: 'pass' }
   };
-  if (!inputsData.emailData.match(emailRegex)) {
+  if (!inputsData.emailData.match(MAIL_REGEX)) {
     return { error: 'email' }
   }
   return true;
@@ -92,7 +100,7 @@ const RegisterPage = () => {
 
   return (
     <div>
-      {(successOrError === '') || <h1>{successOrError}</h1>}
+      {(successOrError === '') || <h2>{`Error: ${successOrError.message}`}</h2>}
       <form onSubmit={(e) => handleSubmit(e, inputsData, setInputsData, setSuccessOrError)}>
         {textAndCheckboxInputs('text', 'Nome', inputsData, setInputsData, "signup-name", 'nameData')}
         {textAndCheckboxInputs('text', 'Email', inputsData, setInputsData, "signup-email", 'emailData')}
