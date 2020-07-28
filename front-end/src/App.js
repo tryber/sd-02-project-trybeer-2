@@ -1,19 +1,24 @@
-import React, { useContext } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React from 'react';
+import { Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
+import AdminHome from './pages/admin/Home'
+import ClientProducts from './pages/client/Products';
+import history from './services/history';
 import RegisterPage from './pages/RegisterPage';
-import { TrybeerContext } from './context/TrybeerContext';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <Router history={history}>
         <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={RegisterPage} />
+          <Route path="/admin/home" component={AdminHome} />
+          <Route path="/client/products" component={ClientProducts} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/" render={() => history.push('/login')} />
         </Switch>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }
