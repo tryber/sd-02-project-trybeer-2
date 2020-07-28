@@ -47,7 +47,7 @@ const verifyValues = (inputsData) => {
   if (!inputsData.nameData || inputsData.nameData.length < 12 || typeof inputsData.nameData !== 'string') {
     return { error: 'name' }
   };
-  if (!inputsData.passData || inputsData.passData.length < 6) {
+  if (!inputsData.passData || inputsData.passData.length < 6 || isNaN(inputsData.passData)) {
     return { error: 'pass' }
   };
   if (!inputsData.emailData.match(MAIL_REGEX)) {
@@ -104,7 +104,7 @@ const RegisterPage = () => {
       <form onSubmit={(e) => handleSubmit(e, inputsData, setInputsData, setSuccessOrError)}>
         {textAndCheckboxInputs('text', 'Nome', inputsData, setInputsData, "signup-name", 'nameData')}
         {textAndCheckboxInputs('text', 'Email', inputsData, setInputsData, "signup-email", 'emailData')}
-        {textAndCheckboxInputs('number', 'Password', inputsData, setInputsData, "signup-password", 'passData')}
+        {textAndCheckboxInputs('password', 'Password', inputsData, setInputsData, "signup-password", 'passData')}
         {textAndCheckboxInputs(
           'checkbox', 'Quero Vender', inputsData, setInputsData, "signup-seller", 'sellerData',
         )}
