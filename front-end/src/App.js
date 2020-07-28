@@ -4,8 +4,8 @@ import Login from './pages/Login';
 import AdminHome from './pages/admin/Home'
 import ClientProducts from './pages/client/Products';
 import history from './services/history';
-import RegisterPage from './pages/RegisterPage';
 import TopMenu from './components/TopMenu';
+import RegisterPage from './pages/RegisterPage';
 import './App.css';
 
 function App() {
