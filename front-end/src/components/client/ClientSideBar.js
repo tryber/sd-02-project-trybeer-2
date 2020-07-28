@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import history from '../services/history';
+import history from '../../services/history';
 
 const SideBar = () => {
   useEffect(() => {
