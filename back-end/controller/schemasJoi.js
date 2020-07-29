@@ -12,7 +12,12 @@ const createUser = Joi.object({
   role: Joi.boolean().required(),
 });
 
+const updateUserById = Joi.object({
+  name: Joi.string().min(12).max(100).required(),
+});
+
 module.exports = {
   loginUser,
   createUser,
+  updateUserById,
 };
