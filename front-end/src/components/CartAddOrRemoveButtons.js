@@ -7,33 +7,58 @@ export default function CartAddOrRemoveButtons ({ product: {  id, name, price, u
   const [itemQty, setItemQty] = useState(0);
   const [lastAction, setLastAction] = useState('null');
 
-  // const sendToLocalStorage = (products) => localStorage.setItem('cart', JSON.stringify(products));
+  const createCartItem = () => {
+    const totalValue = price * itemQty;
+    return { id, name, price, urlImage, itemQty, totalValue };
+    }
 
-  // const updateItemQty = (currentCart) => sendToLocalStorage(currentCart.map((product) => {
-  //   if(product.id === id) {
-  //     return {  id, name, price, urlImage, itemQty }
-  //   }
-  //   return product;
-  // }));
+  const sendToLocalStorage = (products) => {
+    localStorage.removeItem('cart')
+    localStorage.setItem('cart', JSON.stringify(products));
+    const currentCart = localStorage.getItem('cart');
+    if (currentCart === '[]') return localStorage.removeItem('cart');
+  }
 
-  // const refreshCart = () => {
-  //   const currentCart = JSON.parse(localStorage.getItem('cart'));
-  //   if(lastAction === 'add') return addProduct(currentCart);
-  //   if(lastAction === 'remove') return removeProduct(currentCart);
-  // }
+  const updateItemQty = (currentCart) => sendToLocalStorage(currentCart.map((product) => {
+    if(product.id === id) {
+      return createCartItem();
+    }
+    return product;
+  }));
 
-  // const removeProduct = (currentCart) => {
-  //   if (JSON.stringify(currentCart) === '[]') return localStorage.removeItem('cart');
-  //   if(itemQty === 0) return sendToLocalStorage(currentCart.filter((item) => item.id !== id));
-  //   return updateItemQty(currentCart)
-  // }
+  const refreshCart = () => {
+    const currentCart = JSON.parse(localStorage.getItem('cart'));
+    if(lastAction === 'null') {
+      const thisItem = currentCart.find((product) => product.id === id)
+      if(thisItem === undefined) return setItemQty(0);
+      return setItemQty(thisItem.itemQty);
+    }
+    if(lastAction === 'add') return addProduct(currentCart);
+    if(lastAction === 'remove') return removeProduct(currentCart);
+    return null;
+  }
 
-  // const addProduct = (currentCart) => {
-  //   if (currentCart) return updateItemQty(currentCart);
-  //   return localStorage.setItem('cart', JSON.stringify([{  id, name, price, urlImage, itemQty }]));
-  // }
+  const removeProduct = (currentCart) => {
+    const cartRemovedItem = currentCart.filter((item) => item.id !== id)
+    if(itemQty === 0) return sendToLocalStorage(cartRemovedItem);
 
-  // useEffect (() => refreshCart(), [itemQty, refreshCart]);
+    const currentCart2 = localStorage.getItem('cart');
+    if (currentCart2 === '[]') return localStorage.removeItem('cart');
+
+    return updateItemQty(currentCart)
+  }
+
+  const addProduct = (currentCart) => {
+    if (!currentCart) return localStorage.setItem('cart', JSON.stringify([createCartItem()]));
+
+    const newProducts = currentCart;
+    const productIds = currentCart.map(({ id }) => id);
+    if(productIds.some((productId) => productId === id)) return updateItemQty(currentCart);
+    newProducts.push(createCartItem())
+    return sendToLocalStorage(newProducts);
+  }
+
+  useEffect (() => refreshCart(), [itemQty, refreshCart]);
 
   return (
     <div className="add-remove-btns-container">
