@@ -17,7 +17,7 @@ function App() {
           <Route path="/admin/profile" component={AdminHome} />
           <Route path="/products" component={ClientProducts} />
           <Route path="/login" component={Login} />
-          <Route path="/register" component={RegisterPage} />
+          <Route path="/users" component={RegisterPage} />
           <Route path="/" render={() => history.push('/login')} />
         </Switch>
       </Router>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import CartAddOrRemoveButtons from './CartAddOrRemoveButtons.js'
 import '../styles/ProductCard.css';
 
-export default function ProductCard ({ name, price, urlImage }) {
+export default function ProductCard ({ product: {  id, name, price, urlImage } }) {
   return (
     <div className="product-card-container">
       <div className="image-container">
@@ -15,10 +16,8 @@ export default function ProductCard ({ name, price, urlImage }) {
         <div className="product-price-container">
           <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price)}</span>
         </div>
-        <div className="actual-quantity-container">
-
-        </div>
         <div className="add-remove-btns-container">
+          <CartAddOrRemoveButtons product={ { id, name, price, urlImage } } />
         </div>
       </div>
     </div>
