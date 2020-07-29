@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ReactComponent as Add } from '../images/Add.svg';
 import { ReactComponent as Remove } from '../images/Minus.svg';
+import { TrybeerContext } from '../context/TrybeerContext'
 import '../styles/CartAddOrRemoveButtons.css';
 
 export default function CartAddOrRemoveButtons ({ product: {  id, name, price, urlImage } }) {
   const [itemQty, setItemQty] = useState(0);
   const [lastAction, setLastAction] = useState('null');
+  const { shopCart: [,,totalQty, setTotalQty] } = useContext(TrybeerContext)
+
 
   const createCartItem = () => {
     const totalValue = price * itemQty;
@@ -57,8 +60,16 @@ export default function CartAddOrRemoveButtons ({ product: {  id, name, price, u
     newProducts.push(createCartItem())
     return sendToLocalStorage(newProducts);
   }
+  const fetchTotalItemQty = () => {
+    const currentCart = JSON.parse(localStorage.getItem('cart'));
+    const totalQty = currentCart.reduce((total, { itemQty }) => total + itemQty, 0);
+    setTotalQty(totalQty);
+  }
 
-  useEffect (() => refreshCart(), [itemQty, refreshCart]);
+  useEffect (() => {
+    refreshCart();
+    fetchTotalItemQty();
+  }, [itemQty, refreshCart]);
 
   return (
     <div className="add-remove-btns-container">
