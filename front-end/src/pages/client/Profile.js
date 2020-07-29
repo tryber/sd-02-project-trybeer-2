@@ -20,6 +20,17 @@ const emailAndNameInputs = (type, text, value, setValue, testId) => (
   </label>
 );
 
+const saveBtn = (disabled, user) => (
+  <button
+    type="button"
+    data-testid="profile-save-btn"
+    disabled={disabled}
+    onClick={() => sendRequestNewName(user)}
+  >
+    Salvar
+  </button>
+);
+
 const sendRequestNewName = (newUser) => {
   console.log(newUser);
 };
@@ -43,14 +54,7 @@ const Profile = () => {
         {emailAndNameInputs('text', 'email', user.email || '', setUser, 'profile-email-input')}
       </div>
       <div className="profile-bot-container">
-        <button
-          type="button"
-          data-testid="profile-save-btn"
-          disabled={disabled}
-          onClick={() => sendRequestNewName(user)}
-        >
-          Salvar
-        </button>
+        {saveBtn(disabled, user)}
       </div>
     </div>
   );
