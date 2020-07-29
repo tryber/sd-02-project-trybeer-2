@@ -34,7 +34,17 @@ const createUser = async (userInfo) => {
   return createdUser;
 };
 
+const updateUserById = async (id, name) => {
+  const userExists = await userModel.getUserById('id', id);
+  if (!userExists) {
+    return { error: true, message: 'User not found.', code: 'unauthorized' };
+  }
+  const result = await userModel.updateUserById(id, name);
+  return result;
+};
+
 module.exports = {
   loginUser,
   createUser,
+  updateUserById,
 };

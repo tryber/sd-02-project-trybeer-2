@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const cors = require('cors');
 
 const errorController = require('./controller/errorController');
@@ -10,11 +11,16 @@ const middlewares = require('./middleware/validateJwt');
 
 const app = express();
 app.use(cors());
+
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post('/login', userController.loginUser);
-app.post('/register', userController.createUser);
+app.post('/users', userController.createUser);
+
+app.patch('/users/me', middlewares.loginJwt, userController.updateUserById);
 
 app.get('/products', middlewares.loginJwt, productController.getAllProducts);
 app.get('/products/:id', middlewares.loginJwt, productController.getProductById);

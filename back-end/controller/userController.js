@@ -24,7 +24,18 @@ const createUser = rescue(async (req, res, next) => {
   return res.status(201).json(serviceAnswer);
 });
 
+const updateUserById = rescue(async (req, res, next) => {
+  const isValid = await validateJoi(schemasJoi.updateUserById, req.body);
+  if (isValid.error) return next(isValid);
+  const { name } = req.body;
+  const { id } = req.user;
+  const serviceAnswer = await userService.updateUserById(id, name);
+  if (serviceAnswer.error) return next(serviceAnswer);
+  return res.status(200).json(serviceAnswer);
+});
+
 module.exports = {
   loginUser,
   createUser,
+  updateUserById,
 };
