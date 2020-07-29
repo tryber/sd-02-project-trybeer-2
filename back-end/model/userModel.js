@@ -1,13 +1,13 @@
 const connection = require('./connection');
 
-const getUserByEmail = async (param) => {
+const getUserBy = async (paramKey, paramValue) => {
   const session = await connection();
   const result = await session.sql(
     `SELECT u.id, u.name, u.email, u.password, u.role
     FROM users AS u
-    WHERE u.email = ?;`,
+    WHERE u.${paramKey} = ?;`,
   )
-    .bind(param)
+    .bind(paramValue)
     .execute()
     .then((results) => results.fetchAll()[0] || []);
 
@@ -33,22 +33,9 @@ const createUser = async (modelInfo) => {
   return { id, name, email, role: stringRole };
 };
 
-const getUserById = async (param) => {
-  const session = await connection();
-  const result = await session.sql(
-    `SELECT u.id, u.name, u.email, u.password, u.role
-    FROM users AS u
-    WHERE u.id = ?;`,
-  )
-    .bind(param)
-    .execute()
-    .then((results) => results.fetchAll()[0] || []);
+const getUserById = async (userId) => getUserBy('id', userId);
 
-  if (!result.length) return null;
-  const [id, name, email, password, role] = result;
-
-  return { id, name, email, password, role };
-};
+const getUserByEmail = async (email) => getUserBy('email', email);
 
 const updateUserById = async (paramId, paramName) => {
   const session = await connection();

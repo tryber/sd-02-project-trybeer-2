@@ -35,7 +35,7 @@ const createUser = async (userInfo) => {
 };
 
 const updateUserById = async (id, name) => {
-  const userExists = await userModel.getUserById(id);
+  const userExists = await userModel.getUserById('id', id);
   if (!userExists) {
     return { error: true, message: 'User not found.', code: 'unauthorized' };
   }
