@@ -6,8 +6,7 @@ export default function ProductCard ({ product: {  id, name, price, urlImage } }
   return (
     <div className="product-card-container">
       <div className="image-container">
-
-        <img src={urlImage} alt={`Foto do produto: ${name}`} />
+        <img className="product-image" src={urlImage} alt={`Foto do produto: ${name}`} />
       </div>
       <div className="content-container">
         <div className="product-name-container">
