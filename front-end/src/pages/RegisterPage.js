@@ -36,9 +36,9 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
   })
     .catch(({ response: { data: { error } } }) => setErrorMessage(error));
 
-  if (loginData) addLocalStorage(loginData);
+  if (loginData) addLocalStorage(loginData.data);
 
-  return loginData ? registerRedirect(loginData) : null;
+  return loginData ? registerRedirect(loginData.data.role) : null;
 };
 
 const addLocalStorage = ({ name, email, token, role }) => {
@@ -47,7 +47,7 @@ const addLocalStorage = ({ name, email, token, role }) => {
 
 const requestRegister = async ({ nameData, emailData, passData, sellerData }, setSuccessOrError) => {
   const role = (sellerData) ? 'true' : 'false';
-  const resp = await axios.post('http://localhost:3001/register',
+  const resp = await axios.post('http://localhost:3001/users',
     {
       name: nameData,
       email: emailData,

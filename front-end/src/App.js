@@ -17,12 +17,12 @@ function App() {
         <TopMenu />
         <ClientSideBar />
         <Switch>
-          <Route path="/admin/profile" component={AdminHome} />
-          <Route path="/products" component={ClientProducts} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={RegisterPage} />
-          <Route path="/" render={() => history.push('/login')} />
+          <Route exact path="/admin/profile" component={AdminHome} />
+          <Route exact path="/products" component={ClientProducts} />
+          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/" render={() => history.push('/login')} />
         </Switch>
       </Router>
     </div>
