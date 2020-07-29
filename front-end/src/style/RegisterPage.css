@@ -6,8 +6,8 @@
   align-self: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   height: 20vh;
+  justify-content: space-around;
   margin-top: 30%;
 }
 
@@ -26,7 +26,7 @@
   text-align: left;
 }
 
-.label-Quero{
+.label-Quero {
   margin-left: 10%;
   text-align: left;
 }
