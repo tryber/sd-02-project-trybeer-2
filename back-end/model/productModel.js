@@ -32,7 +32,24 @@ const getProductById = async (param) => {
   return { id, name, price, urlImage };
 };
 
+const getProductsByIds = async (arrayIds) => {
+  const session = await connection();
+  const result = await session.sql(
+    `SELECT * 
+    FROM project_trybeer.products
+    WHERE id IN (${arrayIds.join()});`,
+  )
+    .execute()
+    .then((results) => results.fetchAll())
+    .then((products) => products.map(([id, name, price, urlImage]) => ({
+      id, name, price, urlImage,
+    })));
+
+  return result;
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
+  getProductsByIds,
 };
