@@ -7,13 +7,9 @@ import '../../styles/Products.css';
 export default function ClientProducts () {
   const [productData, setProductData] = useState([])
   const [errorStatus, setErrorStatus] = useState('');
-  const { shopCart: [totalPrice, setTotalPrice] } = useContext(TrybeerContext)
+  const { shopCart: [totalPrice, setTotalPrice, totalQty] } = useContext(TrybeerContext)
 
-  const refreshTotalPrice = () => {
-    const currentCart = JSON.parse(localStorage.getItem('cart'));
-    const cartTotalPrice = currentCart.reduce((total, { totalValue }) => total + totalValue, 0);
-    setTotalPrice(cartTotalPrice);
-  }
+
 
   useEffect(() => {
     const productsRequest = async () => {
@@ -27,8 +23,16 @@ export default function ClientProducts () {
       return setProductData(data);
     };
     productsRequest();
-    refreshTotalPrice();
-    }, [])
+    }, []);
+
+  useEffect(() => {
+    const refreshTotalPrice = () => {
+      const currentCart = JSON.parse(localStorage.getItem('cart'));
+      const cartTotalPrice = currentCart ? currentCart.reduce((total, { totalValue }) => total + totalValue, 0) : 0;
+      setTotalPrice(cartTotalPrice);
+    }
+     refreshTotalPrice()
+  }, [totalQty, setTotalPrice]);
 
   return (
     <div className="products-page">

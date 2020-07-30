@@ -7,69 +7,73 @@ import '../styles/CartAddOrRemoveButtons.css';
 export default function CartAddOrRemoveButtons ({ product: {  id, name, price, urlImage } }) {
   const [itemQty, setItemQty] = useState(0);
   const [lastAction, setLastAction] = useState('null');
-  const { shopCart: [,,totalQty, setTotalQty] } = useContext(TrybeerContext)
+  const { shopCart: [,,, setTotalQty] } = useContext(TrybeerContext)
 
 
-  const createCartItem = () => {
-    const totalValue = price * itemQty;
-    return { id, name, price, urlImage, itemQty, totalValue };
-    }
 
-  const sendToLocalStorage = (products) => {
-    localStorage.removeItem('cart')
-    localStorage.setItem('cart', JSON.stringify(products));
-    const currentCart = localStorage.getItem('cart');
-    if (currentCart === '[]') return localStorage.removeItem('cart');
-  }
 
-  const updateItemQty = (currentCart) => sendToLocalStorage(currentCart.map((product) => {
-    if(product.id === id) {
-      return createCartItem();
-    }
-    return product;
-  }));
-
-  const refreshCart = () => {
-    const currentCart = JSON.parse(localStorage.getItem('cart'));
-    if(lastAction === 'null') {
-      const thisItem = currentCart.find((product) => product.id === id)
-      if(thisItem === undefined) return setItemQty(0);
-      return setItemQty(thisItem.itemQty);
-    }
-    if(lastAction === 'add') return addProduct(currentCart);
-    if(lastAction === 'remove') return removeProduct(currentCart);
-    return null;
-  }
-
-  const removeProduct = (currentCart) => {
-    const cartRemovedItem = currentCart.filter((item) => item.id !== id)
-    if(itemQty === 0) return sendToLocalStorage(cartRemovedItem);
-
-    const currentCart2 = localStorage.getItem('cart');
-    if (currentCart2 === '[]') return localStorage.removeItem('cart');
-
-    return updateItemQty(currentCart)
-  }
-
-  const addProduct = (currentCart) => {
-    if (!currentCart) return localStorage.setItem('cart', JSON.stringify([createCartItem()]));
-
-    const newProducts = currentCart;
-    const productIds = currentCart.map(({ id }) => id);
-    if(productIds.some((productId) => productId === id)) return updateItemQty(currentCart);
-    newProducts.push(createCartItem())
-    return sendToLocalStorage(newProducts);
-  }
-  const fetchTotalItemQty = () => {
-    const currentCart = JSON.parse(localStorage.getItem('cart'));
-    const totalQty = currentCart.reduce((total, { itemQty }) => total + itemQty, 0);
-    setTotalQty(totalQty);
-  }
 
   useEffect (() => {
+    const createCartItem = () => {
+      const totalValue = price * itemQty;
+      return { id, name, price, urlImage, itemQty, totalValue };
+      }
+
+    const sendToLocalStorage = (products) => {
+      localStorage.removeItem('cart')
+      localStorage.setItem('cart', JSON.stringify(products));
+      const currentCart = localStorage.getItem('cart');
+      if (currentCart === '[]') return localStorage.removeItem('cart');
+    }
+
+    const updateItemQty = (currentCart) => sendToLocalStorage(currentCart.map((product) => {
+      if(product.id === id) {
+        return createCartItem();
+      }
+      return product;
+    }));
+
+    const removeProduct = (currentCart) => {
+      const cartRemovedItem = currentCart.filter((item) => item.id !== id)
+      if(itemQty === 0) return sendToLocalStorage(cartRemovedItem);
+
+      const currentCart2 = localStorage.getItem('cart');
+      if (currentCart2 === '[]') return localStorage.removeItem('cart');
+
+      return updateItemQty(currentCart)
+    }
+
+    const addProduct = (currentCart) => {
+      if (!currentCart) return localStorage.setItem('cart', JSON.stringify([createCartItem()]));
+
+      const newProducts = currentCart;
+      const productIds = currentCart.map(({ id }) => id);
+      if(productIds.some((productId) => productId === id)) return updateItemQty(currentCart);
+      newProducts.push(createCartItem())
+      return sendToLocalStorage(newProducts);
+    }
+
+    const refreshCart = () => {
+      const currentCart = JSON.parse(localStorage.getItem('cart'));
+      if(lastAction === 'null') {
+        const thisItem = currentCart && currentCart.find((product) => product.id === id)
+        if(thisItem === undefined) return setItemQty(0);
+        return thisItem ? setItemQty(thisItem.itemQty) : setItemQty(0);
+      }
+      if(lastAction === 'add') return addProduct(currentCart);
+      if(lastAction === 'remove') return removeProduct(currentCart);
+      return null;
+    }
+
+    const fetchTotalItemQty = () => {
+      const currentCart = JSON.parse(localStorage.getItem('cart'));
+      const totalQty = currentCart ? currentCart.reduce((total, { itemQty }) => total + itemQty, 0) : 0;
+      setTotalQty(totalQty);
+    };
+
     refreshCart();
     fetchTotalItemQty();
-  }, [itemQty, refreshCart]);
+  }, [itemQty, setTotalQty, id, lastAction, name, price, urlImage]);
 
   return (
     <div className="add-remove-btns-container">
