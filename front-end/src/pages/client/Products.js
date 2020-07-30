@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import history from '../../services/history';
 import ProductCard from '../../components/ProductCard';
 import { TrybeerContext } from '../../context/TrybeerContext'
 import CheckoutButton from '../../components/CheckoutButton';
@@ -10,10 +11,11 @@ export default function ClientProducts () {
   const [errorStatus, setErrorStatus] = useState('');
   const { shopCart: [, setTotalPrice, totalQty] } = useContext(TrybeerContext)
 
-
-
   useEffect(() => {
     const productsRequest = async () => {
+      const isUserLogged = JSON.parse(localStorage.getItem('user'));
+      if (isUserLogged === null) return history.push('/login');
+
       const { token } = JSON.parse(localStorage.getItem('user'));
         const { data } = await axios({
         baseURL: `http://localhost:3001/products`,
