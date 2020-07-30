@@ -57,8 +57,7 @@ export default function CartAddOrRemoveButtons ({ index, product: {  id, name, p
         return thisItem ? setItemQty(thisItem.itemQty) : setItemQty(0);
       }
       if(lastAction === 'add') return addProduct(currentCart);
-      if(lastAction === 'remove') return removeProduct(currentCart);
-      return null;
+      return removeProduct(currentCart);
     }
 
     const fetchTotalItemQty = () => {
