@@ -19,7 +19,7 @@ export default function CartAddOrRemoveButtons ({ index, product: {  id, name, p
       localStorage.removeItem('cart')
       localStorage.setItem('cart', JSON.stringify(products));
       const currentCart = localStorage.getItem('cart');
-      if (currentCart === '[]') return localStorage.removeItem('cart');
+      if (currentCart === '[]') localStorage.removeItem('cart');
     }
 
     const updateItemQty = (currentCart) => sendToLocalStorage(currentCart.map((product) => {
@@ -36,7 +36,7 @@ export default function CartAddOrRemoveButtons ({ index, product: {  id, name, p
       const currentCart2 = localStorage.getItem('cart');
       if (currentCart2 === '[]') return localStorage.removeItem('cart');
 
-      return updateItemQty(currentCart)
+      updateItemQty(currentCart)
     }
 
     const addProduct = (currentCart) => {
@@ -46,7 +46,7 @@ export default function CartAddOrRemoveButtons ({ index, product: {  id, name, p
       const productIds = currentCart.map(({ id }) => id);
       if(productIds.some((productId) => productId === id)) return updateItemQty(currentCart);
       newProducts.push(createCartItem())
-      return sendToLocalStorage(newProducts);
+      sendToLocalStorage(newProducts);
     }
 
     const refreshCart = () => {
