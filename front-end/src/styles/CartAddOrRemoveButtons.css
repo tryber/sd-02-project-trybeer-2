@@ -1,16 +1,16 @@
 .add-remove-btns-container {
+  align-items: center;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
-  align-items: center;
   width: 50%;
 }
 
-.add-btn-container, .remove-btn-container {
+.add-btn-container , .remove-btn-container {
   margin: 0 15px;
 }
 
-.add-btn, .remove-btn {
-  width: 25px;
+.add-btn , .remove-btn {
   height: 25px;
+  width: 25px;
 }
