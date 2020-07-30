@@ -25,7 +25,7 @@ const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, rol
 
 const requestRegister = async ({ nameData, emailData, passData, sellerData }, setSuccessOrError) => {
   const role = (sellerData) ? 'true' : 'false';
-  const resp = await axios.post('http://localhost:3001/register',
+  const resp = await axios.post('http://localhost:3001/users',
     {
       name: nameData,
       email: emailData,
@@ -40,7 +40,7 @@ const requestRegister = async ({ nameData, emailData, passData, sellerData }, se
 const registerRedirect = (role) => (
   role === 'client'
     ? history.push('/client/products')
-    : history.push('/admin/home')
+    : history.push('/admin/profile')
 );
 
 const verifyValues = (inputsData) => {

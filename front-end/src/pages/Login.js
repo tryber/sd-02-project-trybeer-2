@@ -76,7 +76,7 @@ const LoginScreen = () => {
   const [shouldRegister, setShouldRegister] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  if(shouldRegister) return <Redirect to="/users" />
+  if(shouldRegister) return <Redirect to="/register" />
 
   const interactiveFormField = (formName, type, formValidation) => (
     <label className="form-label" htmlFor={formName}>

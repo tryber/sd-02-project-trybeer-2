@@ -19,7 +19,7 @@ function App() {
           <Route path="/products" component={ClientProducts} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/login" component={Login} />
-          <Route path="/users" component={RegisterPage} />
+          <Route path="/register" component={RegisterPage} />
           <Route path="/" render={() => history.push('/login')} />
         </Switch>
       </Router>
