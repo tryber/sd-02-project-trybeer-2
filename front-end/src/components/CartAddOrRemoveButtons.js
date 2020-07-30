@@ -4,14 +4,10 @@ import { ReactComponent as Remove } from '../images/Minus.svg';
 import { TrybeerContext } from '../context/TrybeerContext'
 import '../styles/CartAddOrRemoveButtons.css';
 
-export default function CartAddOrRemoveButtons ({ product: {  id, name, price, urlImage } }) {
+export default function CartAddOrRemoveButtons ({ index, product: {  id, name, price, urlImage } }) {
   const [itemQty, setItemQty] = useState(0);
   const [lastAction, setLastAction] = useState('null');
   const { shopCart: [,,, setTotalQty] } = useContext(TrybeerContext)
-
-
-
-
 
   useEffect (() => {
     const createCartItem = () => {
@@ -78,20 +74,24 @@ export default function CartAddOrRemoveButtons ({ product: {  id, name, price, u
   return (
     <div className="add-remove-btns-container">
       <div className="remove-btn-container">
-        <button type="button" onClick={() => {
-          setLastAction('remove');
-          return itemQty > 0 && setItemQty((qty) => qty - 1)
+        <button type="button"
+          data-testid={`${index}-product-minus`}
+          onClick={() => {
+            setLastAction('remove');
+            return itemQty > 0 && setItemQty((qty) => qty - 1)
         }}>
-          <Remove className="remove-btn"/>
+          <Remove className="remove-btn" />
         </button>
       </div>
       <div className="item-qty-container">
-        <span>{itemQty}</span>
+        <span data-testid={`${index}-product-qtd`}>{itemQty}</span>
       </div>
       <div className="add-btn-container">
-        <button type="button" onClick={() => {
-          setLastAction('add');
-          setItemQty((qty) => qty + 1)
+        <button type="button"
+          data-testid={`${index}-product-plus`}
+          onClick={() => {
+            setLastAction('add');
+            setItemQty((qty) => qty + 1)
         }}>
           <Add className="add-btn"/>
         </button>

@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import ProductCard from '../../components/ProductCard';
 import { TrybeerContext } from '../../context/TrybeerContext'
+import CheckoutButton from '../../components/CheckoutButton';
 import axios from 'axios';
 import '../../styles/Products.css';
 
 export default function ClientProducts () {
   const [productData, setProductData] = useState([])
   const [errorStatus, setErrorStatus] = useState('');
-  const { shopCart: [totalPrice, setTotalPrice, totalQty] } = useContext(TrybeerContext)
+  const { shopCart: [, setTotalPrice, totalQty] } = useContext(TrybeerContext)
 
 
 
@@ -40,8 +41,11 @@ export default function ClientProducts () {
         <span>{errorStatus}</span>
       </div>
       <div className="products-container">
-        {productData && productData.map((product) => (
-          <div className="product-card" key={product.id}><ProductCard product={product} /></div>))}
+        {productData && productData.map((product, index) => (
+          <div className="product-card" key={product.id}><ProductCard product={product} index={index}/></div>))}
+      </div>
+      <div className="checkout-btn-container">
+        <CheckoutButton />
       </div>
     </div>
   )

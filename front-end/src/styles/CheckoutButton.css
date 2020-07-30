@@ -1,0 +1,33 @@
+button {
+  all: unset;
+}
+.checkout-bottom-btn-container {
+  background: #0fea76;
+  bottom: 0px;
+  display: absolute;
+  height: 40px;
+  left: 50%;
+  position: fixed;
+  text-align: center;
+  transform: translateX(-50%);
+  width: 75%;
+}
+.checkout-bottom-btn {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.total-qty-span {
+  margin-right: 15px;
+}
+
+.cart-link {
+  color: black;
+  text-decoration: none;
+  font-weight: 800;
+  margin-left: 15px;
+}
