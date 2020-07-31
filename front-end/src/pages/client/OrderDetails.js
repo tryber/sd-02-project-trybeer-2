@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import history from '../../services/history';
+import OrderCardDetails from '../../components/OrderCardDetails';
 
-const OrderDetails = ({ match: { params: id } }) => {
-  console.log(id);
+const OrderDetails = ({ match: { params: orderId } }) => {
+  useEffect(() => {
+    const isLSExist = JSON.parse(localStorage.getItem('user'));
+    if (!isLSExist || !isLSExist.token) history.push('/login');
+  }, []);
   return (
     <div>
-      Order Details
+      <OrderCardDetails id={orderId} />
     </div>
   );
 };

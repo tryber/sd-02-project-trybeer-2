@@ -62,7 +62,7 @@ const Profile = () => {
       setUser(isLSExist);
       setInitialUser(isLSExist);
     }
-    if (!isLSExist.token) history.push('/login');
+    if (!isLSExist || !isLSExist.token) history.push('/login');
   }, [setUser]);
   if (error.match(/expired/i)) history.push('/login');
   return (
