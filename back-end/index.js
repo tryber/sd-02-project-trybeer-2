@@ -7,6 +7,7 @@ const cors = require('cors');
 const errorController = require('./controller/errorController');
 const userController = require('./controller/userController');
 const productController = require('./controller/productController');
+const saleController = require('./controller/saleController');
 const middlewares = require('./middleware/validateJwt');
 
 const app = express();
@@ -17,6 +18,8 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get('/login', middlewares.loginJwt, (req, res) => res.json({ token: req.user }));
+
 app.post('/login', userController.loginUser);
 app.post('/users', userController.createUser);
 
@@ -24,6 +27,8 @@ app.patch('/users/me', middlewares.loginJwt, userController.updateUserById);
 
 app.get('/products', middlewares.loginJwt, productController.getAllProducts);
 app.get('/products/:id', middlewares.loginJwt, productController.getProductById);
+
+app.post('/sales', middlewares.loginJwt, saleController.createSale);
 
 app.use(errorController.promiseErrors);
 

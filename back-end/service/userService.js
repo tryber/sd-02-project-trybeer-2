@@ -4,7 +4,7 @@ const userModel = require('../model/userModel');
 const jwtSecret = process.env.JWT_SECRET;
 
 const jwtConfig = {
-  expiresIn: '30m',
+  expiresIn: '300m',
   algorithm: 'HS256',
 };
 
