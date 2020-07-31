@@ -6,6 +6,8 @@ import ClientProducts from './pages/client/Products';
 import history from './services/history';
 import TopMenu from './components/TopMenu';
 import RegisterPage from './pages/RegisterPage';
+import OrdersPage from './pages/client/Orders';
+import OrdersDetails from './pages/client/OrderDetails';
 import './App.css';
 
 function App() {
@@ -14,11 +16,13 @@ function App() {
       <Router history={history}>
         <TopMenu />
         <Switch>
-          <Route path="/admin/profile" component={AdminHome} />
-          <Route path="/products" component={ClientProducts} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={RegisterPage} />
-          <Route path="/" render={() => history.push('/login')} />
+          <Route exact path="/admin/profile" component={AdminHome} />
+          <Route exact path="/products" component={ClientProducts} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/orders" component={OrdersPage} />
+          <Route exact path="/orders/:orderId" component={OrdersDetails} />
+          <Route exact path="/" render={() => history.push('/login')} />
         </Switch>
       </Router>
     </div>
