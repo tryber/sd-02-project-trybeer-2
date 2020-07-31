@@ -6,6 +6,7 @@ import '../../style/ClientSideBar.css';
 
 const redirectButton = (setShowSideMenu, route) => {
   setShowSideMenu(false);
+  if (route === '/login') localStorage.removeItem('user');
   history.push(`${route}`);
 };
 
@@ -15,9 +16,15 @@ const SideBar = () => {
   return (!showSideMenu) || (
     <div className="side-menu-container">
       <div className="side-menu-top-container">
-        <button data-testid="side-menu-item-products">Produtos</button>
-        <button data-testid="side-menu-item-my-orders">Meus Pedidos</button>
-        <button data-testid="side-menu-item-my-profile">Meu Perfil</button>
+        <button data-testid="side-menu-item-products" onClick={() => redirectButton(setShowSideMenu, '/products')}>
+          Produtos
+        </button>
+        <button data-testid="side-menu-item-my-orders" onClick={() => redirectButton(setShowSideMenu, '/orders')}>
+          Meus Pedidos
+        </button>
+        <button data-testid="side-menu-item-my-profile" onClick={() => redirectButton(setShowSideMenu, '/profile')}>
+          Meu Perfil
+        </button>
       </div>
       <div className="side-menu-bot-container">
         <button data-testid="side-menu-item-logout" onClick={() => redirectButton(setShowSideMenu, '/login')}>
