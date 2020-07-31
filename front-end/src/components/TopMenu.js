@@ -32,7 +32,7 @@ export default function TopMenu () {
     setDisplayTopMenu(true);
     if(pathname) {
       if(pathname === '/login' || pathname === '/register') return setDisplayTopMenu(false)
-
+      
       if(pathname === '/profile') setHeaderTitle('Meu perfil')
       else if(pathname === '/checkout') setHeaderTitle('Finalizar Pedido')
       else if(pathname === '/orders') setHeaderTitle('Meus Pedidos')
