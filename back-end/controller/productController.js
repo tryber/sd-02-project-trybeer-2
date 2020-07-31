@@ -1,6 +1,4 @@
 const rescue = require('express-rescue');
-// const schemasJoi = require('./schemasJoi');
-// const errorJoi = require('./errorJoi');
 const productService = require('../service/productService');
 
 const getAllProducts = rescue(async (req, res, next) => {
