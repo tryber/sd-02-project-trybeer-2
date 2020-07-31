@@ -30,7 +30,42 @@ const createSaleProducts = async (saleId, productId, quantity) => {
     .execute();
 };
 
+const getSalesByUserId = async (param) => {
+  const session = await connection();
+  const result = await session.sql(
+    `SELECT id, total_price, sale_date
+    FROM sales
+    WHERE user_id = ?;`,
+  )
+    .bind(param)
+    .execute()
+    .then((results) => results.fetchAll())
+    .then((sales) => sales.map(
+      ([id, totalPrice, saleDate]) =>
+        ({ saleId: id, totalPrice, saleDate }),
+    ));
+  if (!result.length) return null;
+  return result;
+};
+
+const getAllSales = async () => {
+  const session = await connection();
+  const result = await session.sql(
+    `SELECT id, total_price, delivery_address, delivery_number, status
+    FROM sales;`,
+  )
+    .execute()
+    .then((results) => results.fetchAll())
+    .then((sales) => sales.map(
+      ([id, totalPrice, deliveryAddress, deliveryNumber, status]) =>
+        ({ saleId: id, totalPrice, deliveryAddress, deliveryNumber, status }),
+    ));
+  return result;
+};
+
 module.exports = {
   createSale,
   createSaleProducts,
+  getSalesByUserId,
+  getAllSales,
 };

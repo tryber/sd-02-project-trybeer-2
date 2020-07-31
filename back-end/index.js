@@ -18,7 +18,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/login', middlewares.loginJwt, (req, res) => res.json({ token: req.user }));
+app.get('/login', middlewares.loginJwt, userController.getLoginUser);
 
 app.post('/login', userController.loginUser);
 app.post('/users', userController.createUser);
@@ -28,6 +28,7 @@ app.patch('/users/me', middlewares.loginJwt, userController.updateUserById);
 app.get('/products', middlewares.loginJwt, productController.getAllProducts);
 app.get('/products/:id', middlewares.loginJwt, productController.getProductById);
 
+app.get('/sales', middlewares.loginJwt, saleController.getSale);
 app.post('/sales', middlewares.loginJwt, saleController.createSale);
 
 app.use(errorController.promiseErrors);

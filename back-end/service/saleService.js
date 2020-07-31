@@ -6,7 +6,7 @@ const createSale = async (sale, userId, name) => {
   const productIds = quantities.map(({ productId }) => productId);
   const products = await productModel.getProductsByIds(productIds);
 
-  if (products.some((elem) => elem === null)) {
+  if (products.length !== quantities.length) {
     return { error: true, message: 'Some products can not be found', code: 'invalid_data' };
   }
 
@@ -25,6 +25,15 @@ const createSale = async (sale, userId, name) => {
   return { user: name, saleId: newSale.id, date: saleDate, total: totalPrice };
 };
 
+const getSale = async (id, role) => {
+  let result;
+  if (role === 'client') result = await saleModel.getSalesByUserId(id);
+  if (role === 'administrator') result = await saleModel.getAllSales();
+  if (!result) return { error: true, message: 'No sale was found', code: 'not_found' };
+  return result;
+};
+
 module.exports = {
   createSale,
+  getSale,
 };

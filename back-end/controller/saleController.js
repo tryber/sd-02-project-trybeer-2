@@ -13,6 +13,14 @@ const createSale = rescue(async (req, res, next) => {
   res.status(201).json(serviceAnswer);
 });
 
+const getSale = rescue(async (req, res, next) => {
+  const { id, role } = req.user;
+  const serviceAnswer = await saleService.getSale(id, role);
+  if (serviceAnswer.error) return next(serviceAnswer);
+  return res.status(200).json(serviceAnswer);
+});
+
 module.exports = {
   createSale,
+  getSale,
 };
