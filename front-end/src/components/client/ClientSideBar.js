@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { TrybeerContext } from '../../context/TrybeerContext';
 import history from '../../services/history';
 
