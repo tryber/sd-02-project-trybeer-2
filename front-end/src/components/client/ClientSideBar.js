@@ -6,7 +6,7 @@ import '../../style/ClientSideBar.css';
 
 const redirectButton = (setShowSideMenu, route) => {
   setShowSideMenu(false);
-  history.push(`${route}`)
+  history.push(`${route}`);
 };
 
 
