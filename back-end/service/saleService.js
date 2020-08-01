@@ -33,7 +33,29 @@ const getSale = async (id, role) => {
   return result;
 };
 
+const getSaleProducts = async (role, userId, saleId) => {
+  let result;
+  if (role === 'client') result = await saleModel.getSaleProductsByUserId(userId, saleId);
+  if (role === 'administrator') result = await saleModel.getAllSaleProducts(saleId);
+  if (!result) {
+    return { error: true, message: 'Products of this sale were not found', code: 'not_found' };
+  }
+  return result;
+};
+
+const updateSaleById = async (saleId, role) => {
+  if (role !== 'administrator') {
+    return { error: true, message: 'Access denied', code: 'unauthorized' };
+  }
+  const result = await saleModel.getSaleById(saleId);
+  if (!result) return { error: true, message: 'No sale was found', code: 'not_found' };
+  await saleModel.updateSaleById(saleId);
+  return result[0];
+};
+
 module.exports = {
   createSale,
   getSale,
+  getSaleProducts,
+  updateSaleById,
 };
