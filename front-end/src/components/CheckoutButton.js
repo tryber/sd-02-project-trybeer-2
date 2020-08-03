@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
 import { TrybeerContext } from '../context/TrybeerContext'
+import useRefreshTotalPrice from '../hooks/useRefreshTotalPrice';
+
 import history from '../services/history';
 import '../styles/CheckoutButton.css';
 
 export default function CheckoutButton () {
-  const { shopCart: [totalPrice] } = useContext(TrybeerContext)
+  const { shopCart: [totalQty] } = useContext(TrybeerContext)
+  const totalPrice = useRefreshTotalPrice(totalQty);
 
   return (
     <div className="checkout-bottom-btn-container">

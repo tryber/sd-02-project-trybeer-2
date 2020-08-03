@@ -5,7 +5,7 @@
   transform: translateX(-50%);
 }
 
-.products-header-container, .address-header-container {
+.products-header-container , .address-header-container {
   font-weight: 800;
   margin-left: 10%;
   text-align: left;

@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import history from '../../services/history';
 import ProductCard from '../../components/ProductCard';
-import { TrybeerContext } from '../../context/TrybeerContext'
 import CheckoutButton from '../../components/CheckoutButton';
 import axios from 'axios';
 import '../../styles/Products.css';
@@ -9,7 +8,6 @@ import '../../styles/Products.css';
 export default function ClientProducts () {
   const [productData, setProductData] = useState([])
   const [errorStatus, setErrorStatus] = useState('');
-  const { shopCart: [, setTotalPrice, totalQty] } = useContext(TrybeerContext)
 
   useEffect(() => {
     const productsRequest = async () => {
@@ -27,15 +25,6 @@ export default function ClientProducts () {
     };
     productsRequest();
     }, []);
-
-  useEffect(() => {
-    const refreshTotalPrice = () => {
-      const currentCart = JSON.parse(localStorage.getItem('cart'));
-      const cartTotalPrice = currentCart ? currentCart.reduce((total, { totalValue }) => total + totalValue, 0) : 0;
-      setTotalPrice(cartTotalPrice);
-    }
-     refreshTotalPrice()
-  }, [totalQty, setTotalPrice]);
 
   return (
     <div className="products-page">

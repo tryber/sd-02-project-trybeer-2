@@ -62,7 +62,7 @@ const requestRegister = async ({ nameData, emailData, passData, sellerData }, se
 const registerRedirect = (role) => (
   role === 'client'
     ? history.push('/products')
-    : history.push('/admin/profile')
+    : history.push('/admin/orders')
 );
 
 const verifyValues = (inputsData) => {
