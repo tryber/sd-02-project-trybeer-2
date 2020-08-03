@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { TrybeerContext } from '../../context/TrybeerContext'
+import React, { useEffect, useState } from 'react';
+import useRefreshTotalPrice from '../../hooks/useRefreshTotalPrice';
 import history from '../../services/history';
 import axios from 'axios';
 import '../../styles/Checkout.css';
@@ -95,28 +95,73 @@ const statusHandler = ({ status, message }, setSalesStatus) => {
   )
 }
 
+const removeItem = (itemId, setCartData) => {
+  const actualCart = JSON.parse(localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : null;
+  if(actualCart !== null) {
+    const newCart = actualCart.filter(({ id }) => id !== itemId)
+    if (String(newCart) === '') {
+      localStorage.removeItem('cart');
+      return setCartData(null)
+    }
+    localStorage.removeItem('cart');
+    localStorage.setItem('cart', JSON.stringify(newCart));
+    return setCartData(newCart);
+  }
+  return setCartData(null);
+}
+
+const renderFormElements = ([setAdressValue, setStreetNumber, addressValue, streetNumber, salesStatus, setSalesStatus, totalPrice]) => (
+  <div className="address-form-container" >
+    <div className="address-header-container">
+      <h3>Endereço</h3>
+      <div>{salesStatus}</div>
+    </div>
+    <form className="address-form">
+      {interactiveFormField('checkout-street-input', 'Rua:', 'text', setAdressValue)}
+      {interactiveFormField('checkout-house-number-input', 'Número da casa:', 'number', setStreetNumber)}
+      <button
+        type="button"
+        data-testid="checkout-finish-btn"
+        className="checkout-finish-btn"
+        onClick={() => sendProducts(addressValue, streetNumber, setSalesStatus)}
+        disabled={!(addressValue && streetNumber && totalPrice)}>
+          Finalizar Pedido
+      </button>
+    </form>
+  </div>
+)
+
+const renderProductsList = (cartData, setCartData, totalPrice) => (
+  <div className="checkout-products-container">
+    <div className="products-header-container">
+      <h3>Produtos</h3>
+    </div>
+    <div className="products-list-container">
+      <ul>
+        {cartData ? cartData.map(({ id, itemQty, name, price, totalValue }, index) => (
+          <li key={name} className="product-item">
+            <span data-testid={`${index}-product-qtd-input`} className="span-itemQty">{itemQty}</span>
+            <span data-testid={`${index}-product-name`}>{`- ${name}`}</span>
+            <span className="spacing-span"></span>
+            <span className="span-total-product-price" data-testid={`${index}-product-total-value`}>{`${formatPrice(totalValue)}`}</span>
+            <span className="span-unit-price">{`(${formatPrice(price)} un)`}</span>
+            <button className="item-removal-button" onClick={() => removeItem(id, setCartData)}>X</button>
+          </li>
+        )) : <h2>Não há produtos no carrinho</h2>}
+      </ul>
+    </div>
+    <div className="total-price-container">
+      <span data-testid="order-total-value">{`Total: ${formatPrice(totalPrice)}`}</span>
+    </div>
+  </div>
+)
+
 export default function Checkout() {
   const [cartData, setCartData] = useState([]);
   const [addressValue, setAdressValue] = useState('');
   const [streetNumber, setStreetNumber] = useState(0);
   const [salesStatus, setSalesStatus] = useState('');
-  const { shopCart: [totalPrice, setTotalPrice] } = useContext(TrybeerContext)
-
-  const removeItem = (itemId) => {
-    const actualCart = JSON.parse(localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : null;
-    if(actualCart !== null) {
-      const newCart = actualCart.filter(({ id }) => id !== itemId)
-      if (String(newCart) === '') {
-        localStorage.removeItem('cart');
-        return setCartData(null)
-      }
-      localStorage.removeItem('cart');
-      localStorage.setItem('cart', JSON.stringify(newCart));
-      return setCartData(newCart);
-    }
-    return setCartData(null);
-  }
-
+  const totalPrice = useRefreshTotalPrice(cartData);
 
   useEffect(() => {
     const isUserLogged = JSON.parse(localStorage.getItem('user'));
@@ -131,57 +176,10 @@ export default function Checkout() {
     setCartData(getAddressInfoFromLocalStorage());
   }, [setCartData]);
 
-  useEffect(() => {
-    const refreshTotalPrice = () => {
-      const currentCart = JSON.parse(localStorage.getItem('cart'));
-      const cartTotalPrice = currentCart ? currentCart.reduce((total, { totalValue }) => total + totalValue, 0) : 0;
-      setTotalPrice(cartTotalPrice);
-    }
-    refreshTotalPrice()
-  }, [setTotalPrice, cartData]);
-
   return (
     <div className="checkout-page-container">
-      <div className="checkout-products-container">
-        <div className="products-header-container">
-          <h3>Produtos</h3>
-        </div>
-        <div className="products-list-container">
-          <ul>
-            {cartData ? cartData.map(({ id, itemQty, name, price, totalValue }, index) => (
-              <li key={name} className="product-item">
-                <span data-testid={`${index}-product-qtd-input`} className="span-itemQty">{itemQty}</span>
-                <span data-testid={`${index}-product-name`}>{`- ${name}`}</span>
-                <span className="spacing-span"></span>
-                <span className="span-total-product-price" data-testid={`${index}-product-total-value`}>{`${formatPrice(totalValue)}`}</span>
-                <span className="span-unit-price">{`(${formatPrice(price)} un)`}</span>
-                <button className="item-removal-button" onClick={() => removeItem(id)}>X</button>
-              </li>
-            )) : <h2>Não há produtos no carrinho</h2>}
-          </ul>
-        </div>
-        <div className="total-price-container">
-          <span data-testid="order-total-value">{`Total: ${formatPrice(totalPrice)}`}</span>
-        </div>
-      </div>
-      <div className="address-form-container" >
-        <div className="address-header-container">
-          <h3>Endereço</h3>
-          <div>{salesStatus}</div>
-        </div>
-        <form className="address-form">
-          {interactiveFormField('checkout-street-input', 'Rua:', 'text', setAdressValue)}
-          {interactiveFormField('checkout-house-number-input', 'Número da casa:', 'number', setStreetNumber)}
-          <button
-            type="button"
-            data-testid="checkout-finish-btn"
-            id="checkout-finish-btn"
-            onClick={() => sendProducts(addressValue, streetNumber, setSalesStatus)}
-            disabled={!(addressValue && streetNumber && totalPrice)}>
-              Finalizar Pedido
-          </button>
-        </form>
-      </div>
+      {renderProductsList(cartData, setCartData, totalPrice)}
+      {renderFormElements([setAdressValue, setStreetNumber, addressValue, streetNumber, salesStatus, setSalesStatus, totalPrice])}
     </div>
   );
 }
