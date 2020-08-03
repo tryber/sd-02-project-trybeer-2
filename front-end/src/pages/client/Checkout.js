@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { TrybeerContext } from '../../context/TrybeerContext'
 import '../../styles/Checkout.css';
 
 const formatPrice = (totalPrice) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice);
@@ -6,12 +7,14 @@ const formatPrice = (totalPrice) => new Intl.NumberFormat('pt-BR', { style: 'cur
 
 export default function Checkout() {
   const [cartData, setCartData] = useState([]);
+  const [addressValue, setAdressValue] = useState('');
+  const [streetNumber, setStreetNumber] = useState(0);
+  const { shopCart: [totalPrice, setTotalPrice] } = useContext(TrybeerContext)
 
   const removeItem = (itemId) => {
     const actualCart = JSON.parse(localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : null;
     if(actualCart !== null) {
       const newCart = actualCart.filter(({ id }) => id !== itemId)
-      console.log(String(newCart));
       if (String(newCart) === '') {
         localStorage.removeItem('cart');
         return setCartData(null)
@@ -23,6 +26,20 @@ export default function Checkout() {
     return setCartData(null);
   }
 
+  const interactiveFormField = (formName, label, type, formValidation) => (
+    <label className="form-label" htmlFor={formName}>
+      {label}
+      <br />
+      <input
+        type={type}
+        id={formName}
+        className="form-field"
+        data-testid={formName}
+        onChange={(e) => formValidation(e.target.value)}/>
+    </label>
+  );
+
+
   useEffect(() => {
     const getAddressInfoFromLocalStorage = () => JSON.parse(localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : null;
     const actualCart = getAddressInfoFromLocalStorage();
@@ -32,6 +49,15 @@ export default function Checkout() {
     }
     setCartData(getAddressInfoFromLocalStorage());
   }, [setCartData]);
+
+  useEffect(() => {
+    const refreshTotalPrice = () => {
+      const currentCart = JSON.parse(localStorage.getItem('cart'));
+      const cartTotalPrice = currentCart ? currentCart.reduce((total, { totalValue }) => total + totalValue, 0) : 0;
+      setTotalPrice(cartTotalPrice);
+    }
+     refreshTotalPrice()
+  }, [setTotalPrice, cartData]);
 
   return (
     <div className="checkout-page-container">
@@ -54,7 +80,7 @@ export default function Checkout() {
           </ul>
         </div>
         <div className="total-price-container">
-
+          <span data-testid="order-total-value">{`Total: ${formatPrice(totalPrice)}`}</span>
         </div>
       </div>
       <div className="address-form-container" >
@@ -62,15 +88,16 @@ export default function Checkout() {
           <h3>Endereço</h3>
         </div>
         <form className="address-form">
-          <label htmlFor="checkout-street-input">
-            Rua:
-            <input type="text" data-testid="checkout-street-input" id="checkout-street-input" />
-          </label>
-          <label htmlFor="checkout-house-number-input">
-            Número da casa:
-            <input type="text" data-testid="checkout-house-number-input" id="checkout-house-number-input" />
-          </label>
-          <button data-testid="checkout-finish-btn" id="checkout-finish-btn">Finalizar Pedido</button>
+          {interactiveFormField('checkout-street-input', 'Rua:', 'text', setAdressValue)}
+          {interactiveFormField('checkout-house-number-input', 'Número da casa:', 'number', setStreetNumber)}
+          <button
+            type="button"
+            data-testid="checkout-finish-btn"
+            id="checkout-finish-btn"
+            onClick={() => console.log(addressValue && streetNumber)}
+            disabled={!(addressValue && streetNumber && totalPrice)}>
+              Finalizar Pedido
+          </button>
         </form>
       </div>
     </div>

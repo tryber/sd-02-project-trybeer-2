@@ -64,7 +64,6 @@
   justify-content: space-between;
   margin-left: 5%;
   margin-right: 5%;
-
   text-align: left;
 }
 
@@ -86,3 +85,20 @@
   transform: translateX(-50%);
   width: 75%;
 }
+
+#checkout-finish-btn:disabled {
+  opacity: 0.5;
+}
+
+.item-removal-button {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.total-price-container {
+  font-weight: 800;
+  text-align: right;
+  margin-right: 10%;
+}
+
