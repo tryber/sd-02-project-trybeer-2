@@ -9,15 +9,15 @@ const redirectToDetailsPage = (orderId) => {
 }
 
 const OrdersCard = ({ orders }) => {
-  const formatedPrice = formatPriceFunc(orders.orderTotalPrice);
-  const formatedDate = formatDateFunc(orders.orderDate);
+  const formatedPrice = formatPriceFunc(orders.totalPrice);
+  const formatedDate = formatDateFunc(orders.saleDate);
 
   return (
     <button
       type="button" className="order-card-container"
-      onClick={() => redirectToDetailsPage(orders.orderNumber)}>
+      onClick={() => redirectToDetailsPage(orders.saleId)}>
       <div className="order-card-top-content">
-        <div className="order-card-text">{`Pedido ${orders.orderNumber}`}</div>
+        <div className="order-card-text">{`Pedido ${orders.saleId}`}</div>
         <div className="order-card-text">{formatedDate}</div>
       </div>
       <div className="order-card-bot-content">
