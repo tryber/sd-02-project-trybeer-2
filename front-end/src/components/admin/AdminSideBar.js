@@ -19,7 +19,7 @@ const AdminSideBar = () => {
     <div className="admin-side-bar-container">
       <div className="admin-side-bar-header">TryBeer</div>
       <div className="admin-side-bar-mid">
-        {sideBarButtons('Pedidos', 'side-menu-item-orders', '/admin')}
+        {sideBarButtons('Pedidos', 'side-menu-item-orders', '/admin/orders')}
         {sideBarButtons('Perfil', 'side-menu-item-profile', '/admin/profile')}
       </div>
       <div className="admin-side-bar-bot">
