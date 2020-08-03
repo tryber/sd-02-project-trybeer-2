@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import history from '../services/history';
 import axios from 'axios';
 
-import '../style/RegisterPage.css';
+import '../styles/RegisterPage.css';
 
 const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -61,7 +61,7 @@ const requestRegister = async ({ nameData, emailData, passData, sellerData }, se
 
 const registerRedirect = (role) => (
   role === 'client'
-    ? history.push('/client/products')
+    ? history.push('/products')
     : history.push('/admin/profile')
 );
 
