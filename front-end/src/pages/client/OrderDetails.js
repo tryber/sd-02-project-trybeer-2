@@ -28,7 +28,7 @@ const OrderDetails = ({ match: { params: { orderId } } }) => {
       setData(await sendRequestOrdersDetails(orderId, setErrorStatus));
     }
     fetchOrderDetails();
-  }, []);
+  }, [orderId, setErrorStatus]);
 
   if (!data) return <div>Loading...</div>;
 
