@@ -1,3 +1,5 @@
+
+
 .checkout-page-container {
   left: 50%;
   min-width: 100%;
@@ -6,8 +8,8 @@
 }
 
 .checkout-page-container h3 {
+  font-weight: 800;
   text-align: left;
-  margin-bottom: 0;
   margin-left: 10%;
 }
 
@@ -16,6 +18,7 @@
   flex-flow: column nowrap;
   justify-content: space-around;
   margin-right: 10%;
+  margin-top: 0;
   min-width: 95%;
 }
 
@@ -24,7 +27,8 @@
   border: 1px solid black;
   border-radius: 5px;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
+  font-weight: 600;
   justify-content: space-between;
   list-style-type: none;
   margin: 4px;
@@ -47,5 +51,38 @@
 }
 
 .spacing-span {
-  min-width: 10%;
+  display: flex;
+  flex-shrink: 3;
+  max-width: 10%;
+  width: 5%;
+}
+
+.address-form, .address-form label {
+  display: flex;
+  flex-flow: column nowrap;
+  font-weight: 600;
+  justify-content: space-between;
+  margin-left: 5%;
+  margin-right: 5%;
+
+  text-align: left;
+}
+
+.address-form input {
+  margin: 5px;
+  min-width: 80%;
+}
+
+#checkout-finish-btn {
+  background: #0fea76;
+  bottom: 0px;
+  font-weight: 800;
+  height: 40px;
+  left: 50%;
+  margin-bottom: 5px;
+  margin-top: 20px;
+  position: relative;
+  text-align: center;
+  transform: translateX(-50%);
+  width: 75%;
 }

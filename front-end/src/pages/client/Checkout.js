@@ -34,14 +34,19 @@ export default function Checkout() {
         </div>
       </div>
       <div className="address-form-container" >
+        <div className="address-header-container">
+          <h3>Endereço</h3>
+        </div>
         <form className="address-form">
           <label htmlFor="checkout-street-input">
+            Rua:
             <input type="text" data-testid="checkout-street-input" id="checkout-street-input" />
           </label>
           <label htmlFor="checkout-house-number-input">
+            Número da casa:
             <input type="text" data-testid="checkout-house-number-input" id="checkout-house-number-input" />
           </label>
-          <button data-testid="checkout-finish-btn" id="checkout-finish-btn"></button>
+          <button data-testid="checkout-finish-btn" id="checkout-finish-btn">Finalizar Pedido</button>
         </form>
       </div>
     </div>
