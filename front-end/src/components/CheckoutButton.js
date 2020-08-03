@@ -10,12 +10,14 @@ export default function CheckoutButton () {
     <div className="checkout-bottom-btn-container">
       <button type="button" data-testid="checkout-bottom-btn" className="checkout-bottom-btn">
         <div className="cart-link-container">
-          <Link to="checkout" className="cart-link">Ver Carrinho</Link>
-        </div>
-        <div className="total-qty-span-container">
-          <span className="total-qty-span" data-testid="checkout-bottom-btn-value">
-            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
-          </span>
+          <Link to="checkout" className="cart-link">
+            Ver Carrinho
+            <div className="total-qty-span-container">
+              <span className="total-qty-span" data-testid="checkout-bottom-btn-value">
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}
+              </span>
+            </div>
+          </Link>
         </div>
       </button>
     </div>

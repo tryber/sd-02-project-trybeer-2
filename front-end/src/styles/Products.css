@@ -2,15 +2,17 @@
   display: flex;
   flex-flow: row wrap;
   max-width: 90%;
-  padding: 15%;
+  padding: 10%;
 }
 
 .product-card {
   display: flex;
   flex-flow: column nowrap;
+  justify-content: space-between;
   margin: 0.3em;
   max-height: 150px;
-  max-width: 45%;
-  min-height: 150px;
-  outline: 1px solid black;
+  max-width: 40%;
+  min-height: 165px;
+  padding: 8px;
+  border: 1px solid black;
 }
