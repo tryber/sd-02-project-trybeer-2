@@ -33,30 +33,31 @@ const sale = [
   },
 ];
 
+
 const showSaleProducts = (products) => (
-  products.map(({ id, name, price }) =>
-    <div className="card-details-mid-container">
+  products.map(({ name, price, quantity }) =>
+    <div key={name} className="card-details-mid-container">
       <div>
-        {`${id} - ${name}`}
+        {`${quantity} - ${name}`}
       </div>
       <div>
-        {formatPriceFunc(price)}
+        {formatPriceFunc(quantity * price)}
       </div>
     </div>
   )
 );
 
-const OrderCardDetails = ({ id: { orderId } }) => {
-  const formatedDate = formatDateFunc(sale[0].orderDate);
+const OrderCardDetails = ({ data, id }) => {
+  const formatedDate = formatDateFunc(data[0].saleDate);
   return (
     <div className="card-details-container">
       <div className="card-details-top-container">
-        <div>{`Pedido ${orderId}`}</div>
+        <div>{`Pedido ${id}`}</div>
         <div>{formatedDate}</div>
       </div>
-      {showSaleProducts(sale[0].products)}
+      {showSaleProducts(data)}
       <div className="card-details-bot-container">
-        {`Total: ${formatPriceFunc(sale[0].orderTotalPrice)}`}
+        {`Total: ${formatPriceFunc(data[0].totalPrice)}`}
       </div>
     </div>
   )
