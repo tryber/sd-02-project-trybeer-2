@@ -102,3 +102,15 @@
   margin-right: 10%;
 }
 
+@keyframes fade {
+  0%   { opacity: 1; }
+  100%  { opacity: 0; }
+}
+
+.sales-status-container {
+  font-size: 'smaller';
+  display: 'inline-block';
+  background: 'red';
+  color: 'black';
+  font-weight: '800';
+}

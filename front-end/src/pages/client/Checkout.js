@@ -6,26 +6,100 @@ import '../../styles/Checkout.css';
 
 const formatPrice = (totalPrice) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice);
 
-const sendProducts = async (deliveryAddress, deliveryNumber) => {
+const interactiveFormField = (formName, label, type, formValidation) => (
+  <label className="form-label" htmlFor={formName}>
+    {label}
+    <br />
+    <input
+      type={type}
+      id={formName}
+      className="form-field"
+      data-testid={formName}
+      onChange={(e) => formValidation(e.target.value)}/>
+  </label>
+);
+
+const sendProducts = async (deliveryAddress, deliveryNumber, setSalesStatus) => {
   const productsData = JSON.parse(localStorage.getItem('cart')).map(({ id: productId, itemQty: quantity }) => {
-    return { productId, quantity, deliveryAddress, deliveryNumber }});
+    return { productId, quantity }});
+
+  const salesObject = { products: productsData, deliveryAddress, deliveryNumber}
 
   const { token } = JSON.parse(localStorage.getItem('user'));
 
-  const sendProductsRequest = await axios({
-  baseURL: `http://localhost:3001/checkout`,
+  console.log(productsData)
+  let error;
+
+  const salesRequest = await axios({
+  baseURL: `http://localhost:3001/sales`,
   method: 'post',
   headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token },
-  data: productsData
+  data: salesObject
   })
-  .catch(({ response: { status, data: { error: { message }}} }) => console.log(`Error: ${status}. ${message}`));
-  return console.log(sendProductsRequest.data)
+  .catch(({ response: { status, data: { error: { message }}} }) => {
+    error = 1;
+    return statusHandler({ status, message }, setSalesStatus);
+  });
+
+  if (error !== 1) return statusHandler(salesRequest, setSalesStatus)
+  return null;
+}
+
+
+const statusHandler = ({ status, message }, setSalesStatus) => {
+  let divStyleError = {
+    fontSize: 'smaller',
+    display: 'inline-block',
+    background: 'red',
+    color: 'black',
+    fontWeight: '800',
+  };
+
+  let divStyleSucess = {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    alignItems: 'center',
+    fontSize: 'smaller',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    background: 'green',
+    color: 'white',
+    fontWeight: '600',
+    width: '60%',
+    height: '15%',
+    opacity: '0',
+    animationName: 'fade',
+    animationDuration: '2s',
+    animationFillMode: 'forwards',
+  };
+
+  if(status === 201) {
+    setTimeout(() => {
+      localStorage.removeItem('cart');
+      return history.push('/products')
+    }, 2000)
+
+    return setSalesStatus(
+      <div style={divStyleSucess} className="sales-status-container">
+        <span>{`Compra realizada com sucesso!`}</span>
+      </div>
+    )
+  }
+
+  return setSalesStatus(
+    <div style={divStyleError} className="sales-status-container">
+      <span>{`Erro código: ${status}, ${message}`}</span>
+    </div>
+  )
 }
 
 export default function Checkout() {
   const [cartData, setCartData] = useState([]);
   const [addressValue, setAdressValue] = useState('');
   const [streetNumber, setStreetNumber] = useState(0);
+  const [salesStatus, setSalesStatus] = useState('');
   const { shopCart: [totalPrice, setTotalPrice] } = useContext(TrybeerContext)
 
   const removeItem = (itemId) => {
@@ -42,19 +116,6 @@ export default function Checkout() {
     }
     return setCartData(null);
   }
-
-  const interactiveFormField = (formName, label, type, formValidation) => (
-    <label className="form-label" htmlFor={formName}>
-      {label}
-      <br />
-      <input
-        type={type}
-        id={formName}
-        className="form-field"
-        data-testid={formName}
-        onChange={(e) => formValidation(e.target.value)}/>
-    </label>
-  );
 
 
   useEffect(() => {
@@ -76,7 +137,7 @@ export default function Checkout() {
       const cartTotalPrice = currentCart ? currentCart.reduce((total, { totalValue }) => total + totalValue, 0) : 0;
       setTotalPrice(cartTotalPrice);
     }
-     refreshTotalPrice()
+    refreshTotalPrice()
   }, [setTotalPrice, cartData]);
 
   return (
@@ -106,6 +167,7 @@ export default function Checkout() {
       <div className="address-form-container" >
         <div className="address-header-container">
           <h3>Endereço</h3>
+          <div>{salesStatus}</div>
         </div>
         <form className="address-form">
           {interactiveFormField('checkout-street-input', 'Rua:', 'text', setAdressValue)}
@@ -114,7 +176,7 @@ export default function Checkout() {
             type="button"
             data-testid="checkout-finish-btn"
             id="checkout-finish-btn"
-            onClick={() => sendProducts(addressValue, streetNumber)}
+            onClick={() => sendProducts(addressValue, streetNumber, setSalesStatus)}
             disabled={!(addressValue && streetNumber && totalPrice)}>
               Finalizar Pedido
           </button>
