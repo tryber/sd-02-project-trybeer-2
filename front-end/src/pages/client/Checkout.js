@@ -1,9 +1,26 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { TrybeerContext } from '../../context/TrybeerContext'
+import history from '../../services/history';
+import axios from 'axios';
 import '../../styles/Checkout.css';
 
 const formatPrice = (totalPrice) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice);
 
+const sendProducts = async (deliveryAddress, deliveryNumber) => {
+  const productsData = JSON.parse(localStorage.getItem('cart')).map(({ id: productId, itemQty: quantity }) => {
+    return { productId, quantity, deliveryAddress, deliveryNumber }});
+
+  const { token } = JSON.parse(localStorage.getItem('user'));
+
+  const sendProductsRequest = await axios({
+  baseURL: `http://localhost:3001/checkout`,
+  method: 'post',
+  headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token },
+  data: productsData
+  })
+  .catch(({ response: { status, data: { error: { message }}} }) => console.log(`Error: ${status}. ${message}`));
+  return console.log(sendProductsRequest.data)
+}
 
 export default function Checkout() {
   const [cartData, setCartData] = useState([]);
@@ -41,6 +58,9 @@ export default function Checkout() {
 
 
   useEffect(() => {
+    const isUserLogged = JSON.parse(localStorage.getItem('user'));
+    if (isUserLogged === null) return history.push('/login');
+
     const getAddressInfoFromLocalStorage = () => JSON.parse(localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : null;
     const actualCart = getAddressInfoFromLocalStorage();
     if(!actualCart || actualCart.length === 0) {
@@ -94,7 +114,7 @@ export default function Checkout() {
             type="button"
             data-testid="checkout-finish-btn"
             id="checkout-finish-btn"
-            onClick={() => console.log(addressValue && streetNumber)}
+            onClick={() => sendProducts(addressValue, streetNumber)}
             disabled={!(addressValue && streetNumber && totalPrice)}>
               Finalizar Pedido
           </button>
