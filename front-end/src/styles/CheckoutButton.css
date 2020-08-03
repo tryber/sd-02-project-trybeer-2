@@ -13,20 +13,23 @@ button {
   width: 75%;
 }
 
-.checkout-bottom-btn, .cart-link {
+.cart-link-container {
   align-items: center;
   color: black;
   display: flex;
   flex-flow: row nowrap;
   font-weight: 800;
   height: 100%;
-  justify-content: space-between;
-  margin-left: 15px;
+  justify-content: space-around;
+  margin-top: 5%;
   text-decoration: none;
   width: 100%;
 }
 
 .total-qty-span {
-  position: inherit;
   margin-left: 35%;
+}
+
+.checkout-bottom-btn:disabled {
+  opacity: 0.5;
 }
