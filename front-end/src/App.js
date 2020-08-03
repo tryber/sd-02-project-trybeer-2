@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import AdminHome from './pages/admin/Home'
 import ClientProducts from './pages/client/Products';
 import history from './services/history';
+import Checkout from './pages/client/Checkout';
 import TopMenu from './components/TopMenu';
 import ClientSideBar from './components/client/ClientSideBar';
 import RegisterPage from './pages/RegisterPage';
