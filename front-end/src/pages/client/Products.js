@@ -1,9 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import history from '../../services/history';
+import ProductCard from '../../components/ProductCard';
+import { TrybeerContext } from '../../context/TrybeerContext'
+import CheckoutButton from '../../components/CheckoutButton';
+import axios from 'axios';
+import '../../styles/Products.css';
 
 export default function ClientProducts () {
+  const [productData, setProductData] = useState([])
+  const [errorStatus, setErrorStatus] = useState('');
+  const { shopCart: [, setTotalPrice, totalQty] } = useContext(TrybeerContext)
+
+  useEffect(() => {
+    const productsRequest = async () => {
+      const isUserLogged = JSON.parse(localStorage.getItem('user'));
+      if (isUserLogged === null) return history.push('/login');
+
+      const { token } = JSON.parse(localStorage.getItem('user'));
+        const { data } = await axios({
+        baseURL: `http://localhost:3001/products`,
+        method: 'get',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
+      })
+      .catch(({ response: { status, data: { error: { message }}} }) => setErrorStatus(`Error: ${status}. ${message}`));
+      return setProductData(data);
+    };
+    productsRequest();
+    }, []);
+
+  useEffect(() => {
+    const refreshTotalPrice = () => {
+      const currentCart = JSON.parse(localStorage.getItem('cart'));
+      const cartTotalPrice = currentCart ? currentCart.reduce((total, { totalValue }) => total + totalValue, 0) : 0;
+      setTotalPrice(cartTotalPrice);
+    }
+     refreshTotalPrice()
+  }, [totalQty, setTotalPrice]);
+
   return (
-    <div>
-      <div>Produtos Cliente</div>
+    <div className="products-page">
+      <div className="status-report-div">
+        <span>{errorStatus}</span>
+      </div>
+      <div className="products-container">
+        {productData && productData.map((product, index) => (
+          <div className="product-card" key={product.id}><ProductCard product={product} index={index}/></div>))}
+      </div>
+      <div className="checkout-btn-container">
+        <CheckoutButton />
+      </div>
     </div>
   )
 }

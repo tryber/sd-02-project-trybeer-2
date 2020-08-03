@@ -1,0 +1,26 @@
+.add-remove-btns-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.product-card-container {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 75px;
+  justify-content: center;
+}
+
+.image-container {
+  max-height: 50%;
+}
+
+.content-container {
+  max-height: 50%;
+}
+
+.product-image {
+  max-height: 80%;
+  max-width: 100%;
+}
