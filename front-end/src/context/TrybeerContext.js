@@ -5,9 +5,12 @@ export const TrybeerContext = createContext();
 
 export default function TrybeerProvider({ children }) {
   const [showSideMenu, setShowSideMenu] = useState(false);
+  const [totalQty, setTotalQty] = useState(0);
+
   const toggleSideMenu = () => setShowSideMenu(!showSideMenu);
   const store = {
-    sideMenu: [showSideMenu, setShowSideMenu, toggleSideMenu]
+    sideMenu: [showSideMenu, setShowSideMenu, toggleSideMenu],
+    shopCart: [totalQty, setTotalQty],
   };
 
   return <TrybeerContext.Provider value={store}>{children}</TrybeerContext.Provider>;

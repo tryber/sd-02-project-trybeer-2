@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import history from '../services/history';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import '../style/Login.css';
+import '../styles/Login.css';
 
 const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -23,7 +23,7 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
 
 const loginRedirect = ({ data: { name, email, token, role } }) => {
   localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
-  if (role === 'administrator') return history.push('/admin/profile');
+  if (role === 'administrator') return history.push('/admin/orders');
   return history.push('/products');
 }
 

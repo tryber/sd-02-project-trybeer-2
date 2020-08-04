@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TrybeerContext } from '../context/TrybeerContext'
 import { ReactComponent as HamburgerMenu } from '../images/HamburgerMenu.svg';
 import { useLocation } from 'react-router-dom';
-import '../style/TopMenu.css';
+import '../styles/TopMenu.css';
 
 const renderPageComponents = (toggleSideMenu, headerTitle) => (
   <div className="top-menu-container">

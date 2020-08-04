@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import history from '../../services/history';
 import axios from 'axios';
-import '../../style/Profile.css';
+import '../../styles/Profile.css';
 
 const verifyLocalStorage = () => {
   return JSON.parse(localStorage.getItem('user'));
@@ -62,7 +62,7 @@ const Profile = () => {
       setUser(isLSExist);
       setInitialUser(isLSExist);
     }
-    if (!isLSExist.token) history.push('/login');
+    if (!isLSExist || !isLSExist.token) history.push('/login');
   }, [setUser]);
   if (error.match(/expired/i)) history.push('/login');
   return (
