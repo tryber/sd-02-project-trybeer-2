@@ -7,7 +7,7 @@ import '../styles/CartAddOrRemoveButtons.css';
 export default function CartAddOrRemoveButtons ({ index, product: {  id, name, price, urlImage } }) {
   const [itemQty, setItemQty] = useState(0);
   const [lastAction, setLastAction] = useState('null');
-  const { shopCart: [,,, setTotalQty] } = useContext(TrybeerContext)
+  const { shopCart: [, setTotalQty] } = useContext(TrybeerContext)
 
   useEffect (() => {
     const createCartItem = () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import history from '../../services/history';
 import axios from 'axios';
-import '../../style/Profile.css';
+import '../../styles/Profile.css';
 
 const verifyLocalStorage = () => {
   return JSON.parse(localStorage.getItem('user'));

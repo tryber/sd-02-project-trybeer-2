@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { TrybeerContext } from '../../context/TrybeerContext';
 import history from '../../services/history';
 
-import '../../style/ClientSideBar.css';
+import '../../styles/ClientSideBar.css';
 
 const redirectButton = (setShowSideMenu, route) => {
   setShowSideMenu(false);
