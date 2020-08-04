@@ -23,7 +23,7 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
 
 const loginRedirect = ({ data: { name, email, token, role } }) => {
   localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
-  if (role === 'administrator') return history.push('/admin/profile');
+  if (role === 'administrator') return history.push('/admin/orders');
   return history.push('/products');
 }
 
