@@ -1,12 +1,9 @@
 .order-card-link {
-  display: flex;
-  flex-flow: column nowrap;
-  max-width: 50%;
   text-decoration: none;
 }
 
 .order-card-text {
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .order-card-container {
@@ -14,16 +11,16 @@
   border: black 1px solid;
   background-color: white;
   color: black;
-  font-size: 30px;
+  font-size: 0.5em;
   flex-flow: column nowrap;
   min-height: 25vh;
   justify-content: space-between;
   margin: 5%;
-  max-width: 100%;
 }
 
 .order-card-address {
   font-weight: 400;
+  font-size: 0.8em;
 }
 
 .order-card-top-content {
@@ -31,13 +28,17 @@
   display: flex;
   flex-flow: column nowrap;
   font-weight: 400;
+  font-size: 0.8em;
   padding: 0 5%;
-  width: 90%;
 }
 
 .order-card-bot-content {
   display: flex;
   justify-content: space-between;
   padding: 0 5%;
-  width: 90%;
+  font-size: 0.8em;
+}
+
+.order-card-status{
+  background: gray;
 }
