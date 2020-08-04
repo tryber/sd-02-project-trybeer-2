@@ -1,6 +1,6 @@
 import React from 'react';
 import history  from '../services/history';
-import '../style/OrdersCard.css'
+import '../styles/OrdersCard.css'
 import formatDateFunc from '../services/formatDateFunc';
 import formatPriceFunc from '../services/formatPriceFunc';
 

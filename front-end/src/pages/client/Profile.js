@@ -38,14 +38,18 @@ const sendRequestNewName = async (newUser, setErrorStatus) => {
     baseURL: 'http://localhost:3001/users/me',
     method: 'patch',
     data: { name: newUser.name },
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': newUser.token }
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': newUser.token
+    }
   })
-    .catch(({ response: { status, data: { error: { message } } } }) => setErrorStatus(`Error: ${status}. ${message}`));
+    .catch(({ response: { status, data: { error: { message } } } }) =>
+      setErrorStatus(`Error: ${status}. ${message}`));
   if (resp) {
     localStorage.setItem('user', JSON.stringify(newUser));
     setErrorStatus(`Atualização concluída com sucesso`);
   };
-  console.log(resp.data);
 };
 
 const Profile = () => {

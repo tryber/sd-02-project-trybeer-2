@@ -10,9 +10,13 @@ describe('Testing Login Page', () => {
       <Login />
     );
     const emailInput = queryByTestId('email-input');
+    expect(emailInput).toBeInTheDocument();
     const passInput = queryByTestId('password-input');
-    expect(emailInput).not.toBeInTheDocument();
     expect(passInput).toBeInTheDocument();
+    const signInButton = queryByTestId('signin-btn');
+    expect(signInButton).toBeInTheDocument();
+    const noAccountButton = queryByTestId('no-account-btn');
+    expect(noAccountButton).toBeInTheDocument();
 
   })
 })
