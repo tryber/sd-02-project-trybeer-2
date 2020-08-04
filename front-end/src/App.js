@@ -1,7 +1,8 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
-import AdminHome from './pages/admin/Home'
+import AdminOrders from './pages/admin/Orders';
+import AdminProfile from './pages/admin/Profile';
 import ClientProducts from './pages/client/Products';
 import history from './services/history';
 import Checkout from './pages/client/Checkout';
@@ -20,7 +21,8 @@ function App() {
         <TopMenu />
         <ClientSideBar />
         <Switch>
-          <Route exact path="/admin/orders" component={AdminHome} />
+          <Route exact path="/admin/orders" component={AdminOrders} />
+          <Route exact path="/admin/profile" component={AdminProfile} />
           <Route exact path="/products" component={ClientProducts} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={RegisterPage} />

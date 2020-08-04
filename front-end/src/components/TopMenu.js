@@ -31,8 +31,9 @@ export default function TopMenu () {
   useEffect(() => {
     setDisplayTopMenu(true);
     if(pathname) {
-      if(pathname === '/login' || pathname === '/register') return setDisplayTopMenu(false)
-      
+      const dontDisplay = ['/register', '/login', '/admin/profile', '/admin/orders'];
+      if(dontDisplay.map((paths) => paths === pathname ? true : false)) return setDisplayTopMenu(false)
+
       if(pathname === '/profile') setHeaderTitle('Meu perfil')
       else if(pathname === '/checkout') setHeaderTitle('Finalizar Pedido')
       else if(pathname === '/orders') setHeaderTitle('Meus Pedidos')
