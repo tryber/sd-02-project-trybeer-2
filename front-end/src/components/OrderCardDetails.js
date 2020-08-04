@@ -1,7 +1,7 @@
 import React from 'react';
 import formatDateFunc from '../services/formatDateFunc';
 import formatPriceFunc from '../services/formatPriceFunc';
-import '../style/OrderCardDetails.css';
+import '../styles/OrderCardDetails.css';
 
 const showSaleProducts = (products) => (
   products.map(({ name, price, quantity }, index) =>
