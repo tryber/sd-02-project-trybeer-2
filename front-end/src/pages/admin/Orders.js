@@ -27,12 +27,15 @@ export default function AdminOrders () {
   }, []);
 
   return (
-    <div className="admin-orders-container">
-      {ordersData && ordersData.length !== 0 && ordersData.map((order) => (
-          <div className="admin-orders-card" key={order.saleId}>
-            <OrderCard orders={order} />
-          </div>
-      ))}
+    <div className="admin-orders-page-container">
+      <h1 className="admin-orders-header">Pedidos</h1>
+      <div className="admin-orders-container">
+        {ordersData && ordersData.length !== 0 && ordersData.map((order) => (
+            <div className="admin-orders-card" key={order.saleId}>
+              <OrderCard orders={order} />
+            </div>
+        ))}
+      </div>
     </div>
   )
 }

@@ -8,3 +8,8 @@
 .admin-orders-card {
   min-width: 50%;
 }
+
+.admin-orders-header {
+  text-align: left;
+  margin-left: 5%;
+}
