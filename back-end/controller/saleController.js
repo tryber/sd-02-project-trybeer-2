@@ -20,7 +20,25 @@ const getSale = rescue(async (req, res, next) => {
   return res.status(200).json(serviceAnswer);
 });
 
+const getSaleProducts = rescue(async (req, res, next) => {
+  const { id: userId, role } = req.user;
+  const { id: saleId } = req.params;
+  const serviceAnswer = await saleService.getSaleProducts(role, userId, saleId);
+  if (serviceAnswer.error) return next(serviceAnswer);
+  return res.status(200).json(serviceAnswer);
+});
+
+const updateSaleById = rescue(async (req, res, next) => {
+  const { id: saleId } = req.params;
+  const { role } = req.user;
+  const serviceAnswer = await saleService.updateSaleById(saleId, role);
+  if (serviceAnswer.error) return next(serviceAnswer);
+  return res.status(200).json(serviceAnswer);
+});
+
 module.exports = {
   createSale,
   getSale,
+  getSaleProducts,
+  updateSaleById,
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import history from '../../services/history';
 import axios from 'axios';
-import '../../style/Profile.css';
+import '../../styles/Profile.css';
 
 const verifyLocalStorage = () => {
   return JSON.parse(localStorage.getItem('user'));
@@ -17,7 +17,7 @@ const emailAndNameInputs = (type, text, value, setValue, testId) => (
       name={text}
       value={value}
       data-testid={testId}
-      onChange={({ target }) => setValue((prev) => ({ ...prev, name: target.value }))}
+      onChange={({ target: { value } }) => setValue((prev) => ({ ...prev, name: value }))}
     />
   </label>
 );
@@ -34,21 +34,18 @@ const saveBtn = (disabled, user, setError) => (
 );
 
 const sendRequestNewName = async (newUser, setErrorStatus) => {
-  const { token } = JSON.parse(localStorage.getItem('user'));
-  if (!token) {
-    history.push('/login');
-  };
   const resp = await axios({
     baseURL: 'http://localhost:3001/users/me',
     method: 'patch',
     data: { name: newUser.name },
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': newUser.token }
   })
     .catch(({ response: { status, data: { error: { message } } } }) => setErrorStatus(`Error: ${status}. ${message}`));
   if (resp) {
     localStorage.setItem('user', JSON.stringify(newUser));
     setErrorStatus(`Atualização concluída com sucesso`);
   };
+  console.log(resp.data);
 };
 
 const Profile = () => {
@@ -58,11 +55,9 @@ const Profile = () => {
   const disabled = user.name === initialUser.name;
   useEffect(() => {
     const isLSExist = verifyLocalStorage();
-    if (isLSExist) {
-      setUser(isLSExist);
-      setInitialUser(isLSExist);
-    }
-    if (!isLSExist.token) history.push('/login');
+    if (!isLSExist || !isLSExist.token) history.push('/login');
+    setUser(isLSExist);
+    setInitialUser(isLSExist);
   }, [setUser]);
   if (error.match(/expired/i)) history.push('/login');
   return (

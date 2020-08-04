@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TrybeerContext } from '../context/TrybeerContext'
 import { ReactComponent as HamburgerMenu } from '../images/HamburgerMenu.svg';
 import { useLocation } from 'react-router-dom';
-import '../style/TopMenu.css';
+import '../styles/TopMenu.css';
 
 const renderPageComponents = (toggleSideMenu, headerTitle) => (
   <div className="top-menu-container">
@@ -31,8 +31,9 @@ export default function TopMenu () {
   useEffect(() => {
     setDisplayTopMenu(true);
     if(pathname) {
-      if(pathname === '/login' || pathname === '/register') return setDisplayTopMenu(false)
-      
+      const dontDisplay = ['/register', '/login', '/admin/profile', '/admin/orders'];
+      if(dontDisplay.map((paths) => paths === pathname ? true : false)) return setDisplayTopMenu(false)
+
       if(pathname === '/profile') setHeaderTitle('Meu perfil')
       else if(pathname === '/checkout') setHeaderTitle('Finalizar Pedido')
       else if(pathname === '/orders') setHeaderTitle('Meus Pedidos')
