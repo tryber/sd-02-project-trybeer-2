@@ -1,0 +1,8 @@
+.admin-orders-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.admin-orders-card {
+  min-width: 50%;
+}
