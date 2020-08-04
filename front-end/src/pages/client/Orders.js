@@ -30,9 +30,10 @@ const Orders = () => {
   }, [setErrorStatus, setData]);
 
   if (!data) return <div>Loading...</div>;
-  
+
   return (
     <div className='orders-container'>
+      {error}
       {data.map((orders) => <OrdersCard key={orders.saleId} orders={orders} />)}
     </div>
   );
