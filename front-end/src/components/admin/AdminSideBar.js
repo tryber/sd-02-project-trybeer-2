@@ -1,6 +1,6 @@
 import React from 'react';
 import history from '../../services/history';
-import '../../style/AdminSideBar.css';
+import '../../styles/AdminSideBar.css';
 
 const redirectPage = (route) => history.push(route);
 
