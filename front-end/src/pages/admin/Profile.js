@@ -14,10 +14,10 @@ export default function AdminProfile () {
   return (
     <div className="admin-profile-header">
       <h1>Perfil</h1>
-      <div className="admin-name-field">
+      <div className="admin-name-field" data-testid="profile-name">
         {`Nome: ${name}`}
       </div>
-      <div className="admin-email-field">
+      <div className="admin-email-field" data-testid="profile-email">
         {`Email: ${email}`}
       </div>
     </div>
