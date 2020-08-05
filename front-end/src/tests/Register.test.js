@@ -34,22 +34,32 @@ describe('Testing Register Page', () => {
 
   test('Testing funcionality of HTML elements', async () => {
     const { queryByTestId } = render(
-      <Provider>
-        <Register />
-      </Provider>
+      <Register />
     );
 
     const nameInput = queryByTestId('signup-name');
     const emailInput = queryByTestId('signup-email');
     const passInput = queryByTestId('signup-password');
     const signInButton = queryByTestId('signup-btn');
+    const sellerCheckBox = queryByTestId('signup-seller');
 
     fireEvent.change(nameInput, { target: { value: 'Felipe' } });
     expect(nameInput.value).toBe('Felipe');
-    fireEvent.change(emailInput, { target: { value: "lipe@.lipe.com" } });
-    await wait();
-    expect(emailInput.value).not.toBe('lipe@.lipe.com');
-
-
-  })
+    fireEvent.change(emailInput, { target: { value: 'lipe@.lipe.com' } });
+    expect(emailInput.value).toBe('lipe@.lipe.com');
+    fireEvent.change(passInput, { target: { value: '12345' } });
+    expect(passInput.value).toBe('12345');
+    fireEvent.change(sellerCheckBox, { target: { checked: true } });
+    expect(sellerCheckBox.checked).toBeTruthy();
+    fireEvent.change(sellerCheckBox, { target: { checked: false } });
+    expect(sellerCheckBox.checked).toBeFalsy();
+    expect(signInButton.disabled).toBeTruthy();
+    fireEvent.change(emailInput, { target: { value: 'lipe@lipe.com' } });
+    expect(signInButton.disabled).toBeTruthy();
+    fireEvent.change(nameInput, { target: { value: 'Felipe Andrade' } });
+    expect(signInButton.disabled).toBeTruthy();
+    fireEvent.change(passInput, { target: { value: '123456' } });
+    expect(signInButton.disabled).toBeFalsy();
+  
+  });
 });
