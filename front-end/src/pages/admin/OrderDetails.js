@@ -18,8 +18,40 @@ const setStatusAsDelivered = async (saleId, token, setOrderDetails) => await axi
   )]}
 )));
 
+const renderProductData = (saleId, status, orderDetails, totalPrice) => (
+  <>
+    <div className="orders-details-header">
+      <span data-testid="order-number">{`Pedido ${saleId} - `}</span>
+      <span data-testid="order-status" style={getStatusColor(status)}>{status}</span>
+    </div>
+    <div className="products-container">
+      <ul className="products-unordered-list">
+        {orderDetails && orderDetails.map(({ quantity, name, price }, index) => (
+          <li className="product-list-item" key={`${name}_${index + 1}`}>
+            <div className="product-main-info">
+              <span data-testid={`${index}-product-qtd`}>{`${quantity} - `}</span>
+              <span data-testid={`${index}-product-name`}>{`${name}`}</span>
+            </div>
+            <div className="product-price-info">
+              <span data-testid={`${index}-product-total-value`}>{`${formatPriceFunc(price * quantity)}`}</span>
+              <span className="product-unitary-price">{`  (${formatPriceFunc(price)})`}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="total-value-container">
+          <span data-testid="order-total-value" className="order-total-value">
+            {`Total: ${formatPriceFunc(totalPrice)}`}
+          </span>
+      </div>
+    </div>
+  </>
+)
+
 export default function AdminOrdersDetails() {
-  const [{ orderDetails, orderDetails: [{totalPrice, status, saleId }]}, setOrderDetails] = useState({ orderDetails: [{ totalPrice: 0, status: 'Pendente', saleId: 0 }]});
+  const [{ orderDetails, orderDetails: [{totalPrice, status, saleId }]}, setOrderDetails] = useState(
+    { orderDetails: [{ totalPrice: 0, status: 'Pendente', saleId: 0 }]}
+  );
 
   const [displaySendOrderBtn, setDisplaySendOrderBtn] = useState(true);
 
@@ -51,31 +83,7 @@ export default function AdminOrdersDetails() {
 
   return (
     <div className="admin-orders-details-container">
-      <div className="orders-details-header">
-        <span data-testid="order-number">{`Pedido ${saleId} - `}</span>
-        <span data-testid="order-status" style={getStatusColor(status)}>{status}</span>
-      </div>
-      <div className="products-container">
-        <ul className="products-unordered-list">
-          {orderDetails && orderDetails.map(({ quantity, name, totalPrice, price }, index) => (
-            <li className="product-list-item" key={`${name}_${index + 1}`}>
-              <div className="product-main-info">
-                <span data-testid={`${index}-product-qtd`}>{`${quantity} - `}</span>
-                <span data-testid={`${index}-product-name`}>{`${name}`}</span>
-              </div>
-              <div className="product-price-info">
-                <span data-testid={`${index}-product-total-value`}>{`${formatPriceFunc(totalPrice)}`}</span>
-                <span className="product-unitary-price">{`  (${formatPriceFunc(price)})`}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="total-value-container">
-            <span data-testid="order-total-value" className="order-total-value">
-              {`Total: ${formatPriceFunc(totalPrice)}`}
-            </span>
-        </div>
-      </div>
+      {renderProductData(saleId, status, orderDetails, totalPrice)}
       {displaySendOrderBtn && (
         <button
           data-testid="mark-as-delivered-btn"
