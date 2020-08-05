@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { TrybeerContext } from '../context/TrybeerContext'
 import useRefreshTotalPrice from '../hooks/useRefreshTotalPrice';
-
 import history from '../services/history';
 import '../styles/CheckoutButton.css';
 

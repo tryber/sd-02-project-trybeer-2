@@ -32,7 +32,7 @@ export default function TopMenu () {
     setDisplayTopMenu(true);
     if(pathname) {
       const dontDisplay = ['/register', '/login', '/admin/profile', '/admin/orders'];
-      if(dontDisplay.map((paths) => paths === pathname ? true : false)) return setDisplayTopMenu(false)
+      if(dontDisplay.find((path) => pathname.match(new RegExp(path, 'g')))) return setDisplayTopMenu(false)
 
       if(pathname === '/profile') setHeaderTitle('Meu perfil')
       else if(pathname === '/checkout') setHeaderTitle('Finalizar Pedido')
