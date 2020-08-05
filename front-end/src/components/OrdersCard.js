@@ -3,6 +3,7 @@ import history  from '../services/history';
 import '../styles/OrdersCard.css'
 import formatDateFunc from '../services/formatDateFunc';
 import formatPriceFunc from '../services/formatPriceFunc';
+import '../styles/OrdersCard.css'
 
 const redirectToDetailsPage = (orderId) => {
   history.push(`/orders/${orderId}`)
