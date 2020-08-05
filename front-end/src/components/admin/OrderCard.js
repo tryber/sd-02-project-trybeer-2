@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom'
 import '../../styles/AdminOrderCard.css'
 import formatPriceFunc from '../../services/formatPriceFunc';
 
+export const getStatusColor = (status) => {
+  if(status === 'Pendente') return { color: 'yellow' }
+  if(status === 'Entregue') return { color: 'green' }
+  return console.error('Status desconhecido.');
+}
+
 export default function OrderCard ({
   orders: { totalPrice, status, saleId, deliveryNumber, deliveryAddress },
 }) {
   const formatedPrice = formatPriceFunc(totalPrice);
-  const getStatusColor = () => {
-    if(status === 'Pendente') return { color: 'yellow' }
-    if(status === 'Entregue') return { color: 'green' }
-    return console.error('Status desconhecido.');
-  }
 
   return (
     <Link to={`/admin/orders/${saleId}`} className="order-card-link">
@@ -25,7 +26,7 @@ export default function OrderCard ({
         <div className="order-card-bot-content">
           <div className="order-card-text">{formatedPrice}</div>
           <div className="order-card-status-content">
-            <span className="order-card-status" style={getStatusColor()}>{status}</span>
+            <span className="order-card-status" style={getStatusColor(status)}>{status}</span>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderCard from '../../components/admin/OrderCard'
+import checkLogin from '../../services/checkLogin';
 import history  from '../../services/history';
 import '../../styles/AdminOrders.css'
 
@@ -8,8 +9,7 @@ export default function AdminOrders () {
   const [ordersData, setOrdersData] = useState([]);
 
   useEffect(() => {
-    const { token } = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
-    if(!token) return history.push('/login');
+    const token = checkLogin();
 
     const getOrders = async () => {
       const ordersData = await axios({
@@ -24,7 +24,7 @@ export default function AdminOrders () {
     }
 
     getOrders()
-  }, []);
+  }, [setOrdersData]);
 
   return (
     <div className="admin-orders-page-container">
