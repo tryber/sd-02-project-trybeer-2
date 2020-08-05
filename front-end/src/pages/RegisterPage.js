@@ -18,8 +18,8 @@ const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, rol
       data-testid={testId}
       onChange={
         (type !== 'checkbox')
-          ? ({ target }) => setValue((prev) => ({ ...prev, [role]: target.value }))
-          : ({ target }) => setValue((prev) => ({ ...prev, [role]: target.checked }))}
+          ? ({ target: { value } }) => setValue((prev) => ({ ...prev, [role]: value }))
+          : ({ target: { checked } }) => setValue((prev) => ({ ...prev, [role]: checked }))}
     />
   </label>
 );
