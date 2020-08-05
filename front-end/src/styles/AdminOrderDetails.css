@@ -43,13 +43,26 @@
 }
 
 .total-value-container {
+  align-items: flex-end;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column-reverse nowrap;
   font-weight: 800;
-  justify-content: flex-end;
+  height: inherit;
+  justify-content: space-between;
   width: 100%;
 }
 
 .order-total-value {
+  align-self: flex-end;
   font-size: 1.5em;
+}
+
+.mark-as-delivered-btn {
+  align-self: flex-end;
+  background: #0fea76;
+  font-weight: 800;
+  height: 40px;
+  margin: 5px 5% 5px 0;
+  padding: 5px;
+  text-align: center;
 }

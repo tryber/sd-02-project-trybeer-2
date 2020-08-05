@@ -30,9 +30,9 @@ export default function AdminOrders () {
     <div className="admin-orders-page-container">
       <h1 className="admin-orders-header">Pedidos</h1>
       <div className="admin-orders-container">
-        {ordersData && ordersData.length !== 0 && ordersData.map((order) => (
+        {ordersData && ordersData.length !== 0 && ordersData.map((order, index) => (
             <div className="admin-orders-card" key={order.saleId}>
-              <OrderCard orders={order} />
+              <OrderCard orders={order} index={index} />
             </div>
         ))}
       </div>

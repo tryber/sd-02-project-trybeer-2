@@ -10,21 +10,25 @@ export const getStatusColor = (status) => {
 }
 
 export default function OrderCard ({
-  orders: { totalPrice, status, saleId, deliveryNumber, deliveryAddress },
+  orders: { totalPrice, status, saleId, deliveryNumber, deliveryAddress }, index
 }) {
-  const formatedPrice = formatPriceFunc(totalPrice);
-
   return (
     <Link to={`/admin/orders/${saleId}`} className="order-card-link">
       <div className="order-card-container">
         <div className="order-card-top-content">
-          <div className="order-card-text">{`Pedido ${saleId}`}</div>
+          <div className="order-card-text" data-testid={`${index}-order-number`}>
+            {`Pedido ${saleId}`}
+          </div>
           <div className="order-card-address-container">
-            <span className="order-card-address">{`${deliveryAddress}, ${deliveryNumber}`}</span>
+            <span className="order-card-address" data-testid={`${index}-order-address`}>
+              {`${deliveryAddress}, ${deliveryNumber}`}
+            </span>
           </div>
         </div>
         <div className="order-card-bot-content">
-          <div className="order-card-text">{formatedPrice}</div>
+          <div className="order-card-text" data-testid={`${index}-order-total-value`}>
+            {formatPriceFunc(totalPrice)}
+          </div>
           <div className="order-card-status-content">
             <span className="order-card-status" style={getStatusColor(status)}>{status}</span>
           </div>

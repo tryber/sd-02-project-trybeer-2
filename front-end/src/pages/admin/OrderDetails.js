@@ -6,29 +6,48 @@ import { getStatusColor } from '../../components/admin/OrderCard'
 import formatPriceFunc from '../../services/formatPriceFunc';
 import '../../styles/AdminOrderDetails.css';
 
+const setStatusAsDelivered = async (saleId, token, setOrderDetails) => await axios({
+  method: 'patch',
+  baseURL: `http://localhost:3001/sales/${saleId}`,
+  headers: { 'Accept': 'application/json', 'Authorization': token }
+})
+  .catch((err) => console.error(err.response))
+  .then(() => setOrderDetails((prevValues) => (
+    { orderDetails: [...prevValues.orderDetails.map(
+      (product) => ({ ...product, status: 'Entregue' })
+  )]}
+)));
+
 export default function AdminOrdersDetails() {
-  const [orderDetails, setOrderDetails] = useState([{ totalPrice: 0, status: 'Pendente', saleId: 0 }]);
+  const [{ orderDetails, orderDetails: [{totalPrice, status, saleId }]}, setOrderDetails] = useState({ orderDetails: [{ totalPrice: 0, status: 'Pendente', saleId: 0 }]});
 
+  const [displaySendOrderBtn, setDisplaySendOrderBtn] = useState(true);
 
-  const { totalPrice, status, saleId } = orderDetails && orderDetails[0];
   const thisOrderID = Number(history.location.pathname.match(/[0-9]+/g));
 
-  useEffect(() => {
-    const token = checkLogin();
+  const token = checkLogin();
 
+  useEffect(() => {
     const getOrderDetails = async () => {
       const detailsData = await axios({
         method: 'get',
         baseURL: `http://localhost:3001/sales/${thisOrderID}`,
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
       })
-      .catch(({ response: { status }}) => {
-        return status === 401 && history.push('/login')
-      } );
-      return detailsData && setOrderDetails(detailsData.data);
+      .catch((err) => {
+        console.error(err.response)
+        return err.response.status === 401 && history.push('/login')
+      });
+
+      return detailsData && setOrderDetails({ orderDetails: detailsData.data });
     }
+
     getOrderDetails();
-  }, [thisOrderID]);
+  }, [thisOrderID, token]);
+
+  useEffect(() => {
+    if(status !== 'Pendente') setDisplaySendOrderBtn(false)
+  }, [status])
 
   return (
     <div className="admin-orders-details-container">
@@ -57,6 +76,15 @@ export default function AdminOrdersDetails() {
             </span>
         </div>
       </div>
+      {displaySendOrderBtn && (
+        <button
+          data-testid="mark-as-delivered-btn"
+          className="mark-as-delivered-btn"
+          onClick={() => setStatusAsDelivered(saleId, token, setOrderDetails)}
+        >
+          Marcar como entregue
+        </button>
+      )}
     </div>
   )
 }
