@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    container: "node:alpine"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build project
+        run: npm ci --prefix=back-end && npm ci --prefix=front-end
+      - name: Run ESLint
+        run: npx eslint .
