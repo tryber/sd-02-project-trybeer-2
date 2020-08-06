@@ -12,4 +12,4 @@ jobs:
       - name: Build back-end and front-end
         run: npm ci --prefix=back-end && npm ci --prefix=front-end
       - name: Run ESLint
-        run: eslint .
+        run: ./nodem_modules/.bin/eslint .
