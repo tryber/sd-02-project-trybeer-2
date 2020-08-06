@@ -10,10 +10,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build back-end and front-end
-        run: npm ci --prefix=back-end && npm ci --prefix=front-end
-      - name: Global packages
-        run: npm -g ls --depth=0
-      - name: Local packages
-        run: npm ls --depth=0
+        run: npm ci --prefix=back-end && npm ci --prefix=front-end && echo "--\n" && npm -g ls --depth=0 && echo "--\n" && npm ls --depth=0
       - name: Run ESLint
         run: npx eslint .
