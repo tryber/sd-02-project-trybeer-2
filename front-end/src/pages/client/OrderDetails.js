@@ -14,7 +14,8 @@ const sendRequestOrdersDetails = async (saleId, setErrorStatus) => {
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
   })
     .catch(({ response: { status, data: { error: { message } } } }) => setErrorStatus(`Error: ${status}. ${message}`));
-  return resp.data;
+  if (resp) return resp.data;
+  return null;
 };
 
 const OrderDetails = ({ match: { params: { orderId } } }) => {
