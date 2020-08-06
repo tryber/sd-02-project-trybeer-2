@@ -9,7 +9,6 @@ const userController = require('./controller/userController');
 const productController = require('./controller/productController');
 const saleController = require('./controller/saleController');
 const middlewares = require('./middleware/validateJwt');
-const saleService = require('./service/saleService');
 
 const app = express();
 app.use(cors());

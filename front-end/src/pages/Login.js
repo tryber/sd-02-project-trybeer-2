@@ -37,6 +37,7 @@ const renderPage = (interactiveFormField, formValidation, [emailData, passData, 
         <button
           className="login-btn"
           disabled={!(isEmailGood && isPasswordGood)}
+          data-testid="signin-btn"
           onClick={(e) => {
             e.preventDefault();
             sendLoginRequest(emailData, passData, setErrorMessage)}}>

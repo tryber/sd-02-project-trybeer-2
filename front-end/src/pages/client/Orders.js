@@ -14,7 +14,8 @@ const sendRequestOrders = async (setErrorStatus) => {
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
   })
     .catch(({ response: { status, data: { error: { message } } } }) => setErrorStatus(`Error: ${status}. ${message}`));
-  return resp.data;
+    if(resp) return resp.data;
+    return null;
 };
 
 const Orders = () => {
@@ -34,7 +35,7 @@ const Orders = () => {
   return (
     <div className='orders-container'>
       {error}
-      {data.map((orders) => <OrdersCard key={orders.saleId} orders={orders} />)}
+      {data.map((orders, index) => <OrdersCard key={orders.saleId} orders={orders} index={index} />)}
     </div>
   );
 };
