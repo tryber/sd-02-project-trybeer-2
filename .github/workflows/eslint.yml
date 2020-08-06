@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Global packages
+        run: npm ls --depth=0
       - name: Build back-end and front-end
         run: |
           npm ci --prefix=back-end
