@@ -9,7 +9,7 @@ export default function AdminProfile () {
 
     if(!isLoggedIn) history.push('/login')
   }, [isLoggedIn])
-
+  if (!isLoggedIn) return null;
   const { name, email } = isLoggedIn;
   return (
     <div className="admin-profile-header">

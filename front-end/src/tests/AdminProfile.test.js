@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render, fireEvent, wait, cleanup } from '@testing-library/react';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 import history from '../services/history';
 import Profile from '../pages/admin/Profile';
 import Provider from '../context/TrybeerContext';
@@ -19,7 +19,7 @@ beforeEach(() => {
 });
 
 describe('Tests for Admin Profile', () => {
-  test('Verify HTML elements appears on page', () => {
+  test  ('Verify HTML elements appears on page', () => {
     localStorage.setItem('user', JSON.stringify(administratorUser));
     const { queryByTestId } = render(
       <Provider>
@@ -67,21 +67,11 @@ describe('Tests for Admin Profile', () => {
     expect(history.location.pathname).toBe('/login');
   });
 
-  // test('Verify useEffect redirect', () => {
-  //   jest.mock('../pages/admin/Profile', () => <div></div>);
+  test('Verify useEffect redirect', () => {
+    const { queryByTestId } = render(<Profile />);
 
-  //   const { queryByTestId } = render(
-  //     <Profile />
-  //   );
-  //   // const ordersLink = queryByTestId('side-menu-item-orders');
-  //   // const profileLink = queryByTestId('side-menu-item-profile');
-  //   // const logoutLink = queryByTestId('side-menu-item-logout');
-
-  //   // fireEvent.click(ordersLink);
-  //   // expect(history.location.pathname).toBe('/admin/orders');
-  //   // fireEvent.click(profileLink);
-  //   // expect(history.location.pathname).toBe('/admin/profile');
-  //   // fireEvent.click(logoutLink);
-  //   // expect(history.location.pathname).toBe('/login');
-  // });
+    const ordersLink = queryByTestId('side-menu-item-orders');
+    expect(ordersLink).not.toBeInTheDocument();
+    expect(history.location.pathname).toBe('/login');
+  });
 });
