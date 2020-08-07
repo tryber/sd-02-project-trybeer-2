@@ -11,22 +11,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Build and lint
         run: |
-          ls -la /github/home
+          npm ci --prefix=back-end
+          npm ci --prefix=front-end
           echo "--"
-          cd back-end/
-          echo $(pwd)
-          npm ci
-          echo "=="
-          npx eslint .
+          ls -la node_modules
           echo "--"
-          cd ../front-end/
-          echo $(pwd)
-          npm ci
-          echo "=="
-          npx eslint --env-info
-          echo "**"
-          npx eslint .
-          echo "--"
-          cd ../
-          echo $(pwd)
           npx eslint .
