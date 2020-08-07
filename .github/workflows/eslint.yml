@@ -14,10 +14,14 @@ jobs:
           cd back-end/
           echo $(pwd)
           npm ci
+          echo "=="
+          npx eslint .
           echo "--"
           cd ../front-end/
           echo $(pwd)
           npm ci
+          echo "=="
+          npx eslint .
           echo "--"
           cd ../
           echo $(pwd)
