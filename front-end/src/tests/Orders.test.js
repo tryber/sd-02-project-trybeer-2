@@ -1,12 +1,10 @@
 import React from 'react';
 import { render, fireEvent, cleanup, wait } from '@testing-library/react';
 import axios from 'axios';
-import { Router } from 'react-router-dom';
 import history from '../services/history';
 import Provider from '../context/TrybeerContext';
 import Orders from '../pages/client/Orders';
 import formatDateFunc from '../services/formatDateFunc';
-import formatPriceFunc from '../services/formatPriceFunc';
 
 const usersMock = {
   email: 'johnatas.henrique@gmail.com',
@@ -71,7 +69,7 @@ describe('Testing Orders Page', () => {
   test('if axios is rejected', async () => {
     localStorage.setItem('user', JSON.stringify(usersMock));
     axios.mockRejectedValueOnce(dataError);
-    const { getByText } = render(
+    render(
       <Provider>
         <Orders />
       </Provider>
@@ -82,7 +80,7 @@ describe('Testing Orders Page', () => {
   test('if page changes when user clicks an item', async () => {
     localStorage.setItem('user', JSON.stringify(usersMock));
     axios.mockResolvedValueOnce(ordersMock);
-    const { queryByTestId } = render(
+    render(
       <Provider>
         <Orders />
       </Provider>

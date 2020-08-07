@@ -99,7 +99,7 @@ describe('Testando funcionamento da pagina de profile', () => {
   test('if user is logged', () => {
     localStorage.setItem('user', JSON.stringify(usersMockWithoutToken));
     history.push('/profile');
-    const { queryByTestId } = render(
+    render(
       <Provider>
         <Profile />
       </Provider>,
