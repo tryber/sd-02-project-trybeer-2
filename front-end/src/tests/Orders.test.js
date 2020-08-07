@@ -88,6 +88,9 @@ describe('Testing Orders Page', () => {
       </Provider>
     );
     await wait();
+    expect(queryByTestId('1-order-number')).toBeInTheDocument();
+    fireEvent.click(queryByTestId('1-order-number'));
+    expect(history.location.pathname).toBe('/orders/6');
   });
 
   test('if user is logged', async () => {
@@ -99,8 +102,6 @@ describe('Testing Orders Page', () => {
       </Provider>
     );
     await wait();
-    expect(queryByTestId('1-order-number')).toBeInTheDocument();
-    fireEvent.click(queryByTestId('1-order-number'));
-    expect(history.location.pathname).toBe('/orders/6');
+    expect(history.location.pathname).toBe('/login');
   });
 })
