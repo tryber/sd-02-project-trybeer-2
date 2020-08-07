@@ -11,6 +11,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Build and lint
         run: |
+          ls -la /home/github
+          echo "--"
           cd back-end/
           echo $(pwd)
           npm ci
