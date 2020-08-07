@@ -12,9 +12,13 @@ jobs:
       - name: Build and lint
         run: |
           cd back-end/
+          echo $(pwd)
           npm ci
           echo "--"
           cd ../front-end/
+          echo $(pwd)
           npm ci
           echo "--"
+          cd ../
+          echo $(pwd)
           npx eslint .
