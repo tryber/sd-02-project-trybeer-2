@@ -9,7 +9,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Build project
-        run: npm ci --prefix=back-end && npm ci --prefix=front-end
+      - name: Build back-end
+        run: npm ci --prefix=back-end
+      - name: Build front-end
+        run: npm ci --prefix=front-end
       - name: Lint project
         run: npx eslint --no-inline-config .
