@@ -1,10 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, fireEvent, wait, cleanup } from '@testing-library/react';
-import { Router } from 'react-router-dom';
 import history from '../services/history';
 import Register from '../pages/RegisterPage';
-import Provider from '../context/TrybeerContext';
 import axios from 'axios';
 
 const newUser = {
