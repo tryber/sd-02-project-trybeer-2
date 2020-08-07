@@ -21,6 +21,8 @@ jobs:
           echo $(pwd)
           npm ci
           echo "=="
+          npx eslint --env-info
+          echo "**"
           npx eslint .
           echo "--"
           cd ../
