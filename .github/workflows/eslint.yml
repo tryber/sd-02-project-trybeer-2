@@ -5,15 +5,13 @@ on:
 jobs:
   linter:
     runs-on: ubuntu-latest
+    container: "node:alpine"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build and lint
-        uses: docker://node:alpine
         run: |
           npm ci --prefix=back-end
           npm ci --prefix=front-end
           echo "--"
-          ls -la node_modules
-          echo "--"
-          npx eslint .
+          npm -g install eslint && eslint .
