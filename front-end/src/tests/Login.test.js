@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
-import { Router } from 'react-router-dom';
 import history from '../services/history';
 import Login from '../pages/Login';
 import axios from 'axios';
