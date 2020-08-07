@@ -9,9 +9,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Build and lint
-        run: |
-          npm ci --prefix=back-end
-          npm ci --prefix=front-end
-          echo "--"
-          npm -g install eslint && eslint .
+      - name: Build project
+        run: npm ci --prefix=back-end && npm ci --prefix=front-end
+      - name: Lint project
+        run: npx eslint --no-inline-config .
