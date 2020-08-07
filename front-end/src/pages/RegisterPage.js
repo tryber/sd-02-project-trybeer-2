@@ -35,7 +35,6 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
   })
     .catch(({ response: { data: { error } } }) => setErrorMessage(error));
-
   if (loginData) addLocalStorage(loginData.data);
 
   return loginData ? registerRedirect(loginData.data.role) : null;
@@ -57,6 +56,7 @@ const requestRegister = async ({ nameData, emailData, passData, sellerData }, se
     .catch((err) => setSuccessOrError(err.response.data.error));
 
   if (resp) return await sendLoginRequest(emailData, passData, setSuccessOrError)
+  return null;
 };
 
 const registerRedirect = (role) => (
@@ -94,14 +94,14 @@ const handleSubmit = async (event, inputsData, setInputsData, setSuccessOrError)
     setInputsData((prev) => ({ ...prev, nameData: '' }));
     return event.preventDefault();
   }
-  if (isValid.error === 'pass') {
-    alert('A senha deve conter ao menos 6 números');
-    setInputsData((prev) => ({ ...prev, passData: '' }));
-    return event.preventDefault();
-  }
   if (isValid.error === 'email') {
     alert('Formato de Email invalido');
     setInputsData((prev) => ({ ...prev, emailData: '' }));
+    return event.preventDefault();
+  }
+  if (isValid.error === 'pass') {
+    alert('A senha deve conter ao menos 6 números');
+    setInputsData((prev) => ({ ...prev, passData: '' }));
     return event.preventDefault();
   }
   clearFields(setInputsData);
