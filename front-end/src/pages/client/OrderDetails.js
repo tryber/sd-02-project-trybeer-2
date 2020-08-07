@@ -18,7 +18,7 @@ const sendRequestOrdersDetails = async (saleId, setErrorStatus) => {
 };
 
 const OrderDetails = ({ match: { params: { orderId } } }) => {
-  const [error, setErrorStatus] = useState(null);
+  const [, setErrorStatus] = useState(null);
   const [data, setData] = useState(null);
 
   useEffect(() => {
