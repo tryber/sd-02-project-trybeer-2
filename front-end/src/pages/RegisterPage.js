@@ -7,8 +7,9 @@ import '../styles/RegisterPage.css';
 const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, role) => (
-  <label htmlFor={text}>
+  <label htmlFor={text} className={`label-${text}`}>
     {text}
+    <br />
     <input
       type={type}
       name={text}
@@ -23,9 +24,30 @@ const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, rol
   </label>
 );
 
+const sendLoginRequest = async (email, password, setErrorMessage) => {
+  const loginData = await axios({
+    baseURL: `http://localhost:3001/login`,
+    method: 'post',
+    data: {
+      email,
+      password
+    },
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+  })
+    .catch(({ response: { data: { error } } }) => setErrorMessage(error));
+
+  if (loginData) addLocalStorage(loginData.data);
+
+  return loginData ? registerRedirect(loginData.data.role) : null;
+};
+
+const addLocalStorage = ({ name, email, token, role }) => {
+  localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
+};
+
 const requestRegister = async ({ nameData, emailData, passData, sellerData }, setSuccessOrError) => {
   const role = (sellerData) ? 'true' : 'false';
-  const resp = await axios.post('http://localhost:3001/register',
+  const resp = await axios.post('http://localhost:3001/users',
     {
       name: nameData,
       email: emailData,
@@ -34,13 +56,13 @@ const requestRegister = async ({ nameData, emailData, passData, sellerData }, se
     })
     .catch((err) => setSuccessOrError(err.response.data.error));
 
-  if (resp) registerRedirect(resp.data.role);
+  if (resp) return await sendLoginRequest(emailData, passData, setSuccessOrError)
 };
 
 const registerRedirect = (role) => (
   role === 'client'
-    ? history.push('/client/products')
-    : history.push('/admin/home')
+    ? history.push('/products')
+    : history.push('/admin/orders')
 );
 
 const verifyValues = (inputsData) => {
@@ -99,9 +121,12 @@ const RegisterPage = () => {
   const disabled = verifyValues(inputsData);
 
   return (
-    <div>
+    <div className="register-page-container">
       {(successOrError === '') || <h2>{`Error: ${successOrError.message}`}</h2>}
-      <form onSubmit={(e) => handleSubmit(e, inputsData, setInputsData, setSuccessOrError)}>
+      <form
+        className="register-form-container"
+        onSubmit={(e) => handleSubmit(e, inputsData, setInputsData, setSuccessOrError)}
+      >
         {textAndCheckboxInputs('text', 'Nome', inputsData, setInputsData, "signup-name", 'nameData')}
         {textAndCheckboxInputs('text', 'Email', inputsData, setInputsData, "signup-email", 'emailData')}
         {textAndCheckboxInputs('password', 'Password', inputsData, setInputsData, "signup-password", 'passData')}

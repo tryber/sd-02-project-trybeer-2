@@ -4,7 +4,7 @@ const userModel = require('../model/userModel');
 const jwtSecret = process.env.JWT_SECRET;
 
 const jwtConfig = {
-  expiresIn: '30m',
+  expiresIn: '300m',
   algorithm: 'HS256',
 };
 
@@ -34,7 +34,17 @@ const createUser = async (userInfo) => {
   return createdUser;
 };
 
+const updateUserById = async (id, name) => {
+  const userExists = await userModel.getUserById(id);
+  if (!userExists) {
+    return { error: true, message: 'User not found.', code: 'unauthorized' };
+  }
+  const result = await userModel.updateUserById(id, name);
+  return result;
+};
+
 module.exports = {
   loginUser,
   createUser,
+  updateUserById,
 };
