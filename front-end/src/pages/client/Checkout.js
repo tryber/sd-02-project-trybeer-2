@@ -27,7 +27,6 @@ const sendProducts = async (deliveryAddress, deliveryNumber, setSalesStatus) => 
 
   const { token } = JSON.parse(localStorage.getItem('user'));
 
-  console.log(productsData)
   let error;
 
   const salesRequest = await axios({
