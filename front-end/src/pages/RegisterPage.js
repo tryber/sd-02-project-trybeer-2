@@ -18,8 +18,8 @@ const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, rol
       data-testid={testId}
       onChange={
         (type !== 'checkbox')
-          ? ({ target }) => setValue((prev) => ({ ...prev, [role]: target.value }))
-          : ({ target }) => setValue((prev) => ({ ...prev, [role]: target.checked }))}
+          ? ({ target: { value } }) => setValue((prev) => ({ ...prev, [role]: value }))
+          : ({ target: { checked } }) => setValue((prev) => ({ ...prev, [role]: checked }))}
     />
   </label>
 );
@@ -46,7 +46,6 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
     : registerRedirect(loginData.data.role);
 
   /*  .catch(({ response: { data: { error } } }) => setErrorMessage(error));
-
   if (loginData) addLocalStorage(loginData.data);
 
   return loginData ? registerRedirect(loginData.data.role) : null;*/
@@ -107,14 +106,14 @@ const handleSubmit = async (event, inputsData, setInputsData, setSuccessOrError)
     setInputsData((prev) => ({ ...prev, nameData: '' }));
     return event.preventDefault();
   }
-  if (isValid.error === 'pass') {
-    alert('A senha deve conter ao menos 6 números');
-    setInputsData((prev) => ({ ...prev, passData: '' }));
-    return event.preventDefault();
-  }
   if (isValid.error === 'email') {
     alert('Formato de Email invalido');
     setInputsData((prev) => ({ ...prev, emailData: '' }));
+    return event.preventDefault();
+  }
+  if (isValid.error === 'pass') {
+    alert('A senha deve conter ao menos 6 números');
+    setInputsData((prev) => ({ ...prev, passData: '' }));
     return event.preventDefault();
   }
   clearFields(setInputsData);
