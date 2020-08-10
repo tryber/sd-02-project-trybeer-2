@@ -15,9 +15,9 @@ const emailAndNameInputs = (type, text, value, setValue, testId) => (
       readOnly={(text === 'email') || false}
       type={type}
       name={text}
-      value={value}
+      defaultValue={value}
       data-testid={testId}
-      onChange={({ target: { value } }) => setValue((prev) => ({ ...prev, name: value }))}
+      onChange={({ target }) => setValue((prev) => ({ ...prev, name: target.value }))}
     />
   </label>
 );
@@ -45,7 +45,6 @@ const sendRequestNewName = async (newUser, setErrorStatus) => {
     localStorage.setItem('user', JSON.stringify(newUser));
     setErrorStatus(`Atualização concluída com sucesso`);
   };
-  console.log(resp.data);
 };
 
 const Profile = () => {
