@@ -14,10 +14,13 @@ const sendRequestOrders = async (setErrorStatus) => {
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
   })
     .catch(({ response: { status, data: { error: { message } } } }) => {
+      if (status === 404) {
+        setErrorStatus('Você ainda não tem nenhum pedido.')
+        return true;
+      }
       setErrorStatus(`Error: ${status}. ${message}`);
       return true;
     });
-  console.log(resp);
   if (!resp) return 'Error: 500. Falha na conexão com o Banco';
   if (resp.data) return resp.data;
   return resp;
