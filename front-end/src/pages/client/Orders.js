@@ -13,9 +13,14 @@ const sendRequestOrders = async (setErrorStatus) => {
     method: 'get',
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
   })
-    .catch(({ response: { status, data: { error: { message } } } }) => setErrorStatus(`Error: ${status}. ${message}`));
-    if(resp) return resp.data;
-    return null;
+    .catch(({ response: { status, data: { error: { message } } } }) => {
+      setErrorStatus(`Error: ${status}. ${message}`);
+      return true;
+    });
+  console.log(resp);
+  if (!resp) return 'Error: 500. Falha na conexão com o Banco';
+  if (resp.data) return resp.data;
+  return resp;
 };
 
 const Orders = () => {
@@ -34,8 +39,8 @@ const Orders = () => {
 
   return (
     <div className='orders-container'>
-      {error}
-      {data.map((orders, index) => <OrdersCard key={orders.saleId} orders={orders} index={index} />)}
+      {error ||
+        data.map((orders, index) => <OrdersCard key={orders.saleId} orders={orders} index={index} />)}
     </div>
   );
 };

@@ -13,3 +13,11 @@
   margin-left: 5%;
   text-align: left;
 }
+
+.admin-orders-page-container {
+  display: flex;
+}
+
+.admin-orders-content {
+  width: 100%;
+}
