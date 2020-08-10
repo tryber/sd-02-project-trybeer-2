@@ -15,9 +15,9 @@ const emailAndNameInputs = (type, text, value, setValue, testId) => (
       readOnly={(text === 'email') || false}
       type={type}
       name={text}
-      value={value}
+      defaultValue={value}
       data-testid={testId}
-      onChange={({ target: { value } }) => setValue((prev) => ({ ...prev, name: value }))}
+      onChange={({ target }) => setValue((prev) => ({ ...prev, name: target.value }))}
     />
   </label>
 );

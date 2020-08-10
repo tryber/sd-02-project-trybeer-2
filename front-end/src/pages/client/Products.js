@@ -5,7 +5,7 @@ import CheckoutButton from '../../components/CheckoutButton';
 import axios from 'axios';
 import '../../styles/Products.css';
 
-export default function ClientProducts () {
+export default function ClientProducts() {
   const [productData, setProductData] = useState([])
   const [errorStatus, setErrorStatus] = useState('');
 
@@ -15,16 +15,21 @@ export default function ClientProducts () {
       if (isUserLogged === null) return history.push('/login');
 
       const { token } = JSON.parse(localStorage.getItem('user'));
-        const { data } = await axios({
+      const resp = await axios({
         baseURL: `http://localhost:3001/products`,
         method: 'get',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
       })
-      .catch(({ response: { status, data: { error: { message }}} }) => setErrorStatus(`Error: ${status}. ${message}`));
-      return setProductData(data);
+        .catch(({ response: { status, data: { error: { message } } } }) => {
+          setErrorStatus(`Error: ${status}. ${message}`);
+          return true;
+        });
+      if (!resp) return setErrorStatus('Error: 500. Falha na conexão com o banco');
+      if (resp.data) return setProductData(resp.data);
+      return null;
     };
     productsRequest();
-    }, []);
+  }, []);
 
   return (
     <div className="products-page">
@@ -33,7 +38,7 @@ export default function ClientProducts () {
       </div>
       <div className="products-container">
         {productData && productData.map((product, index) => (
-          <div className="product-card" key={product.id}><ProductCard product={product} index={index}/></div>))}
+          <div className="product-card" key={product.id}><ProductCard product={product} index={index} /></div>))}
       </div>
       <div className="checkout-btn-container">
         <CheckoutButton />

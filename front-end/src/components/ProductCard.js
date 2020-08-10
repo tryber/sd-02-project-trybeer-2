@@ -10,7 +10,7 @@ export default function ProductCard ({ index, product: {  id, name, price, urlIm
       </div>
       <div className="content-container">
         <div className="product-name-container">
-          <h5>{name}</h5>
+          <h5 data-testid={`${index}-product-name`}>{name}</h5>
         </div>
         <div className="product-price-container">
           <span data-testid={`${index}-product-price`}>

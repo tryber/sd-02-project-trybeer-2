@@ -5,6 +5,7 @@ import checkLogin from '../../services/checkLogin';
 import { getStatusColor } from '../../components/admin/OrderCard'
 import formatPriceFunc from '../../services/formatPriceFunc';
 import '../../styles/AdminOrderDetails.css';
+import AdminSideBar from '../../components/admin/AdminSideBar';
 
 const setStatusAsDelivered = async (saleId, token, setOrderDetails) => await axios({
   method: 'patch',
@@ -13,10 +14,12 @@ const setStatusAsDelivered = async (saleId, token, setOrderDetails) => await axi
 })
   .catch((err) => console.error(err.response))
   .then(() => setOrderDetails((prevValues) => (
-    { orderDetails: [...prevValues.orderDetails.map(
-      (product) => ({ ...product, status: 'Entregue' })
-  )]}
-)));
+    {
+      orderDetails: [...prevValues.orderDetails.map(
+        (product) => ({ ...product, status: 'Entregue' })
+      )]
+    }
+  )));
 
 const renderProductData = (saleId, status, orderDetails, totalPrice) => (
   <>
@@ -40,17 +43,17 @@ const renderProductData = (saleId, status, orderDetails, totalPrice) => (
         ))}
       </ul>
       <div className="total-value-container">
-          <span data-testid="order-total-value" className="order-total-value">
-            {`Total: ${formatPriceFunc(totalPrice)}`}
-          </span>
+        <span data-testid="order-total-value" className="order-total-value">
+          {`Total: ${formatPriceFunc(totalPrice)}`}
+        </span>
       </div>
     </div>
   </>
 )
 
 export default function AdminOrdersDetails() {
-  const [{ orderDetails, orderDetails: [{totalPrice, status, saleId }]}, setOrderDetails] = useState(
-    { orderDetails: [{ totalPrice: 0, status: 'Pendente', saleId: 0 }]}
+  const [{ orderDetails, orderDetails: [{ totalPrice, status, saleId }] }, setOrderDetails] = useState(
+    { orderDetails: [{ totalPrice: 0, status: 'Pendente', saleId: 0 }] }
   );
 
   const [displaySendOrderBtn, setDisplaySendOrderBtn] = useState(true);
@@ -66,10 +69,10 @@ export default function AdminOrdersDetails() {
         baseURL: `http://localhost:3001/sales/${thisOrderID}`,
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
       })
-      .catch((err) => {
-        console.error(err.response)
-        return err.response.status === 401 && history.push('/login')
-      });
+        .catch((err) => {
+          console.error(err.response)
+          return err.response.status === 401 && history.push('/login')
+        });
 
       return detailsData && setOrderDetails({ orderDetails: detailsData.data });
     }
@@ -78,21 +81,24 @@ export default function AdminOrdersDetails() {
   }, [thisOrderID, token]);
 
   useEffect(() => {
-    if(status !== 'Pendente') setDisplaySendOrderBtn(false)
+    if (status !== 'Pendente') setDisplaySendOrderBtn(false)
   }, [status])
 
   return (
-    <div className="admin-orders-details-container">
-      {renderProductData(saleId, status, orderDetails, totalPrice)}
-      {displaySendOrderBtn && (
-        <button
-          data-testid="mark-as-delivered-btn"
-          className="mark-as-delivered-btn"
-          onClick={() => setStatusAsDelivered(saleId, token, setOrderDetails)}
-        >
-          Marcar como entregue
-        </button>
-      )}
+    <div className="admin-orders-details-flex-container">
+      <AdminSideBar />
+      <div className="admin-orders-details-container">
+        {renderProductData(saleId, status, orderDetails, totalPrice)}
+        {displaySendOrderBtn && (
+          <button
+            data-testid="mark-as-delivered-btn"
+            className="mark-as-delivered-btn"
+            onClick={() => setStatusAsDelivered(saleId, token, setOrderDetails)}
+          >
+            Marcar como entregue
+          </button>
+        )}
+      </div>
     </div>
   )
 }
