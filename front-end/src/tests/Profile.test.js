@@ -72,7 +72,7 @@ describe('Testando funcionamento da pagina de profile', () => {
     localStorage.setItem('user', JSON.stringify(usersMock));
     history.push('/profile');
     const { queryByTestId } = render(
-        <Profile />
+      <Profile />
     );
     expect(queryByTestId("profile-save-btn")).toBeInTheDocument();
     expect(queryByTestId("profile-save-btn").innerHTML).toBe("Salvar");

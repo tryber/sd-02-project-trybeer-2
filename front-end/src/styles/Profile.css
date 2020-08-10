@@ -38,6 +38,13 @@
 }
 
 .profile-bot-container button {
+  background-color: green;
+  margin: 0 10px;
+  width: 90%;
+}
+
+.profile-bot-container button:disabled {
+  background-color: gray;
   margin: 0 10px;
   width: 90%;
 }
