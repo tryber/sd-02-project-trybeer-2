@@ -14,11 +14,16 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
       email,
       password
     },
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json'}
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
   })
-  .catch(({ response: { status, data: { error: { message }}} }) => setErrorMessage(`Error: ${status}. ${message}`));
+    .catch(({ response }) => response);
+  // .catch(({ response: { status, data: { error: { message }}} }) => setErrorMessage(`Error: ${status}. ${message}`));
 
-  return loginData ? loginRedirect(loginData) : null;
+  if (!loginData) return setErrorMessage('Error: Falha de Conexão');
+
+  return loginData.data.error
+    ? setErrorMessage(`Error: ${loginData.status}. ${loginData.data.error.message}`)
+    : loginRedirect(loginData);
 }
 
 const loginRedirect = ({ data: { name, email, token, role } }) => {
@@ -40,8 +45,9 @@ const renderPage = (interactiveFormField, formValidation, [emailData, passData, 
           data-testid="signin-btn"
           onClick={(e) => {
             e.preventDefault();
-            sendLoginRequest(emailData, passData, setErrorMessage)}}>
-              ENTRAR
+            sendLoginRequest(emailData, passData, setErrorMessage)
+          }}>
+          ENTRAR
         </button>
       </form>
     </div>
@@ -58,7 +64,7 @@ const renderPage = (interactiveFormField, formValidation, [emailData, passData, 
 
 
 const formValidation = ([type, value], setPassData, setIsPasswordGood, setEmailData, setIsEmailGood) => {
-  if(type === 'password') {
+  if (type === 'password') {
     setPassData(value)
     if (value.length >= 6) return setIsPasswordGood(true)
     return setIsPasswordGood(false);
@@ -77,7 +83,7 @@ const LoginScreen = () => {
   const [shouldRegister, setShouldRegister] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  if(shouldRegister) return <Redirect to="/register" />
+  if (shouldRegister) return <Redirect to="/register" />
 
   const interactiveFormField = (formName, type, formValidation) => (
     <label className="form-label" htmlFor={formName}>
@@ -88,7 +94,7 @@ const LoginScreen = () => {
         id={formName}
         className="form-field"
         data-testid={formName}
-        onChange={(e) => formValidation([type, e.target.value], setPassData, setIsPasswordGood, setEmailData, setIsEmailGood)}/>
+        onChange={(e) => formValidation([type, e.target.value], setPassData, setIsPasswordGood, setEmailData, setIsEmailGood)} />
     </label>
   );
 

@@ -34,11 +34,22 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
     },
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
   })
-    .catch(({ response: { data: { error } } }) => setErrorMessage(error));
+    .catch(({ response }) => response);
+  // .catch(({ response: { status, data: { error: { message }}} }) => setErrorMessage(`Error: ${status}. ${message}`));
+
+  if (!loginData) return setErrorMessage('Error: Falha de Conexão');
+
+  if (!loginData.data.error) addLocalStorage(loginData.data);
+
+  return loginData.data.error
+    ? setErrorMessage(`Error: ${loginData.status}. ${loginData.data.error.message}`)
+    : registerRedirect(loginData.data.role);
+
+  /*  .catch(({ response: { data: { error } } }) => setErrorMessage(error));
 
   if (loginData) addLocalStorage(loginData.data);
 
-  return loginData ? registerRedirect(loginData.data.role) : null;
+  return loginData ? registerRedirect(loginData.data.role) : null;*/
 };
 
 const addLocalStorage = ({ name, email, token, role }) => {
@@ -54,9 +65,11 @@ const requestRegister = async ({ nameData, emailData, passData, sellerData }, se
       password: passData,
       role,
     })
-    .catch((err) => setSuccessOrError(err.response.data.error));
+    .catch(({ response }) => response);
 
-  if (resp) return await sendLoginRequest(emailData, passData, setSuccessOrError)
+  if (!resp) return setSuccessOrError({ message: 'Falha de conexão' });
+  if (!resp.data.error) return await sendLoginRequest(emailData, passData, setSuccessOrError);
+  return setSuccessOrError({ message: resp.data.error.message });
 };
 
 const registerRedirect = (role) => (

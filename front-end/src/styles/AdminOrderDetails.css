@@ -4,6 +4,7 @@
   justify-content: flex-start;
   min-height: 400px;
   text-align: left;
+  width: 100%;
 }
 
 .orders-details-header {
@@ -18,7 +19,6 @@
   flex-grow: 1;
   justify-content: flex-start;
   margin: 0;
-  min-height: 100%;
   padding: 0;
 }
 
@@ -65,4 +65,8 @@
   margin: 5px 5% 5px 0;
   padding: 5px;
   text-align: center;
+}
+
+.admin-orders-details-flex-container {
+  display: flex;
 }
