@@ -28,7 +28,7 @@
   display: flex;
   flex-flow: column nowrap;
   font-size: 0.8em;
-  font-weight: 400;
+  font-weight: 800;
   padding: 0 5%;
 }
 
@@ -40,5 +40,7 @@
 }
 
 .order-card-status {
-  background: gray;
+  font: 40px/1 'Notable', sans-serif;
+  -webkit-text-stroke: 1px black;
+  font-weight: 800;
 }
